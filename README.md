@@ -1,6 +1,6 @@
 Command  
 ===
-# Private Region   
+## Private Region   
 1. /pr create {name}   
 name - the name of Private Region.   
 permission: kingdom.region.private.create   
@@ -14,7 +14,7 @@ The command sender can only claim for his/her own private region, unless he/she 
 name - the name of Private Region.   
 permission: kingdom.region.private.claim
 Move the core of Private Region to the position of sender.
-# Kingdom
+## Kingdom
 1. /kingdom reload   
 permission: kingdom.admin    
 Reload the plugin.
