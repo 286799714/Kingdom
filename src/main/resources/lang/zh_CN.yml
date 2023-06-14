@@ -1,0 +1,50 @@
+# 作者: MaydayMemory
+cmd:
+  command-not-found: §c未找到命令：§f%command%§c。
+  player-only: §c只有玩家可以执行这个命令。
+  missing-argument: |-
+    §c缺少参数
+    用法：§f%help%
+  no-permission: §c你没有权限这样做。
+  integer-format-wrong: |-
+    错误的输入格式。需要一个整数。检查:
+    %format%
+  float-format-wrong: |-
+    错误的输入格式。需要一个小数。检查:
+    %format%
+  double-format-wrong: |-
+    错误的输入格式。需要一个小数。检查:
+    %format%
+  bool-format-wrong: |-
+    错误的输入格式。需要一个布尔值(true/false)。检查:
+    %format%
+  player-not-found: '§c找不到玩家: §f%player%'
+cmd-inf:
+  reload:
+    description: 重新加载插件
+    success: Kingdom插件重载完成
+  create-private:
+    description: 创建一个私人区域
+    parameter:
+      name: 区域名称
+      name-hover: 字符串
+    success: |-
+      区域创建成功。
+      输入/pr claim %name% 来为你的私人区域声明领地。
+    name-taken: §c名称已被占用
+    amount-limit: "§c你拥有的私人区域数量已经达到上限: %limit%"
+  claim:
+    description: 为私人区域声明一块居住区
+    parameter:
+      name: 区域名称
+      name-hover: 字符串
+    not-found: §c找不到该名称对应的私人区域
+    core-type-err: "§c在config.yml的 'private-region.claim.core-block' 选项设置了错误的方块类型(找不到对应的类型或不是方块)"
+    claimed: "§c这个区块已被声明为: %type%"
+    world-unsupported: §c当前世界不允许声明居住区。
+    amount-limit: §c此区域的声明数量已达到上限：%limit%
+    success-living: 为 %region% 声明了一块居住区，区块坐标 %chunk%
+region:
+  factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
+  illegal-break: §c你不能在私人领地声明的区块外破坏或放置
+  living: 居住区

@@ -1,0 +1,22 @@
+language: en_US
+
+# ################################ #
+#                                  #
+#         Private Region           #
+# ################################ #
+private-region:
+  # The number limit of Private Regions per person could have
+  # One who has "kingdom.admin" permissions will not be limited by this option.
+  amount-limit: 1
+
+  # The names of the world in which the private regions are effective.
+  allow-worlds:
+    - world
+
+  # If true, players will not be able to break or place outside their Private Regions.
+  ban-breaking: true
+
+  claim:
+    # The limit of claiming chunks for Private Region
+    limit: 8
+    core-block: BEACON

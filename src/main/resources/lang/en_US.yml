@@ -1,0 +1,50 @@
+# Author: MaydayMemory
+cmd:
+  player-not-found: '§cPlayer not found: §f%player% ~'
+  command-not-found: '§cCommand not found: §f%command%§c.'
+  player-only: §cOnly players can execute this command.
+  missing-argument: |-
+    §cMissing parameters
+    Usage: §f%help%
+  no-permission: §cYou don't have permission to do this.
+  integer-format-wrong: |-
+    Wrong input format. An integer is required. Check:
+    %format%
+  float-format-wrong: |-
+    Wrong input format. A decimal is required. Check:
+    %format%
+  double-format-wrong: |-
+    Wrong input format. A decimal is required. Check:
+    %format%
+  bool-format-wrong: |-
+    Wrong input format. A boolean type(true/false) is required. Check:
+    %format%'
+cmd-inf:
+  reload:
+    description: Reload the plugin
+    success: Plugin Kingdom reloaded successfully.
+  create-private:
+    description: Create a private region
+    parameter:
+      name: name
+      name-hover: String
+    success: |-
+      Successfully created a new private region.
+      Input /pr claim %name% to claim a chunk for your Private Region。
+    name-taken: §cThis name has already been taken.
+    amount-limit: "§cThe number of private regions you own has reached the upper limit: %limit%"
+  claim:
+    description: Claim a living chunk for your Private Region
+    parameter:
+      name: region name
+      name-hover: String
+    not-found: §cNo Private Region found for that name
+    core-type-err: "§cThe wrong block type is set in the 'private-region.claim.core-block' option of config.yml (could not find the corresponding type or not a block)"
+    claimed: "§cThis chunk has been claim as the type of: %type%"
+    world-unsupported: §cClaims are not allowed in this world.
+    amount-limit: "§cThis region's claimed chunks have reached to limit: %limit%"
+    success-living: A living chunk has been claim by %region%. Chunk coordinate %chunk%
+region:
+  factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
+  illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
+  living: Living Area

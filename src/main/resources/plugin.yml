@@ -1,0 +1,14 @@
+name: Kingdom
+main: com.maydaymemory.kingdom.PluginKingdom
+version: 1.0.0
+api-version: 1.19
+permissions:
+  kingdom.admin:
+    default: op
+    children:
+      kingdom.player: true
+  kingdom.player:
+    default: true
+    children:
+      kingdom.region.private.create: true
+      kingdom.region.private.claim: true
