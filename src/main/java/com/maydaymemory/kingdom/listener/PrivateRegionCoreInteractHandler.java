@@ -47,7 +47,8 @@ public class PrivateRegionCoreInteractHandler implements Listener {
         OfflinePlayer player = event.getRegion().getOwner();
         if(player.getUniqueId().equals(event.getBreaker().getUniqueId())){
             event.getBreaker().sendMessage("你不能这样操作");
-            //return;
+            event.setCancelled(true);
+            return;
         }
         //todo
         PrivateRegionCoreBrokenEvent event1 = new PrivateRegionCoreBrokenEvent(event.getRegion(), event.getBreaker());
@@ -59,7 +60,7 @@ public class PrivateRegionCoreInteractHandler implements Listener {
         event.getBreaker().sendMessage("你成功破坏了核心");
     }
 
-    //All handlers below are for core block protection.
+    //All handlers below are to protect core block.
     @EventHandler
     public void onCoreExtent(BlockPistonExtendEvent event){
         for(Block block : event.getBlocks()){

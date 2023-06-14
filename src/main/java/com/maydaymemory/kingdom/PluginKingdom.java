@@ -38,8 +38,7 @@ public class PluginKingdom extends JavaPlugin {
         MyRegionFactory regionFactory = new MyRegionFactory();
         RegionManagerProvider.getInstance().getRegionManager().matchFactory(new RegionTypeToken<PrivateRegion>(){}, regionFactory);
         //Listener register
-        if(config.getBoolean("private-region.ban-breaking", true))
-            Bukkit.getPluginManager().registerEvents(new BanBreakingHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new BanBreakingHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionCoreInteractHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionRedstoneHandler(), this);
     }

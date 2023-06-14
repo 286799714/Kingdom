@@ -39,6 +39,7 @@ public class BanBreakingHandler implements Listener {
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event){
+        if(!config.getBoolean("private-region.ban-breaking", true)) return;
         Player player = event.getPlayer();
         Chunk chunk = event.getBlock().getChunk();
         if(placeOrBreakCheck(player, chunk)) {
@@ -49,6 +50,7 @@ public class BanBreakingHandler implements Listener {
 
     @EventHandler
     public void onPlayerPlaceBlock(BlockPlaceEvent event){
+        if(!config.getBoolean("private-region.ban-breaking", true)) return;
         Player player = event.getPlayer();
         Chunk chunk = event.getBlock().getChunk();
         if(placeOrBreakCheck(player, chunk)) {

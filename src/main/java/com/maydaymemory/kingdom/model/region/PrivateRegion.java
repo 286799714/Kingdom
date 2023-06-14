@@ -4,6 +4,7 @@ import com.maydaymemory.kingdom.core.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -78,8 +79,11 @@ public class PrivateRegion extends AdministrativeRegion{
         if(fromName(name) == null) this.name = name;
     }
 
-    public @Nullable Pair<String, Pair<Integer, Integer>> getMainChunk(){
-        return mainChunk;
+    public @Nullable Chunk getMainChunk(){
+        if(mainChunk == null) return null;
+        World world = Bukkit.getWorld(mainChunk.getFormer());
+        if(world == null) return null;
+        return world.getChunkAt(mainChunk.getLatter().getFormer(), mainChunk.getLatter().getLatter());
     }
 
     public void setMainChunk(@Nullable Chunk chunk){

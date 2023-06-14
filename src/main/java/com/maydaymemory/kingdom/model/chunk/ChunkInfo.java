@@ -85,17 +85,6 @@ public class ChunkInfo{
 
     public void setMainChunk(boolean mainChunk) {
         isMainChunk = mainChunk;
-        if(mainChunk){
-            World world1 = Bukkit.getWorld(world);
-            if(world1 != null){
-                Chunk chunk = world1.getChunkAt(x, z);
-                Block block = chunk.getBlock(7,0,7);
-                Block base = world1.getHighestBlockAt(block.getLocation());
-                cx = base.getX();
-                cy = base.getY() + 1;
-                cz = base.getZ();
-            }
-        }
     }
 
     public int getCoreX() {
@@ -108,5 +97,17 @@ public class ChunkInfo{
 
     public int getCoreZ() {
         return cz;
+    }
+
+    public void setCoreX(int cx) {
+        this.cx = cx;
+    }
+
+    public void setCoreY(int cy) {
+        this.cy = cy;
+    }
+
+    public void setCoreZ(int cz) {
+        this.cz = cz;
     }
 }

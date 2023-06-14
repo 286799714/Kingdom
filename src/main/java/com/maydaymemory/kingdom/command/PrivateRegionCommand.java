@@ -15,7 +15,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
-
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -82,9 +81,7 @@ public class PrivateRegionCommand extends BaseCommand{
                 }
                 ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
                 if(chunkInfo.isClaimed()){
-                    String message = processMessage("cmd-inf.claim.claimed");
-                    if(chunkInfo.isResidentChunk()) message = message.replaceAll("%type%", processMessage("region.living"));
-                    sender.sendMessage(message);
+                    sender.sendMessage(processMessage("cmd-inf.claim.claimed"));
                     return;
                 }
                 int limit = config.getInt("private-region.claim.limit", 8);
@@ -94,7 +91,7 @@ public class PrivateRegionCommand extends BaseCommand{
                 }
                 Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
                 if(type == null || !type.isBlock()) {
-                    sender.sendMessage(processMessage("cmd-inf.claim.core-type-err"));
+                    sender.sendMessage(processMessage("cmd-inf.core-type-err"));
                     return;
                 }
                 if(PrivateRegionAPI.getInstance().claim(region, chunk)) {
@@ -117,15 +114,67 @@ public class PrivateRegionCommand extends BaseCommand{
             }
             return new ArrayList<>();
         }
-        private Stream<PrivateRegion> getStream(Player player){
-            boolean flag = player.hasPermission("kingdom.admin");
-            return RegionManagerProvider.getInstance().getRegionManager().getRegionMap().values().stream()
-                    .filter(region -> region instanceof PrivateRegion)
-                    .map(region -> (PrivateRegion) region)
-                    .filter(region -> {
-                        if(flag) return true;
-                        else return region.getOwner().getUniqueId().equals(player.getUniqueId());
-                    });
+    };
+
+    private Stream<PrivateRegion> getStream(Player player){
+        boolean flag = player.hasPermission("kingdom.admin");
+        return RegionManagerProvider.getInstance().getRegionManager().getRegionMap().values().stream()
+                .filter(region -> region instanceof PrivateRegion)
+                .map(region -> (PrivateRegion) region)
+                .filter(region -> {
+                    if(flag) return true;
+                    else return region.getOwner().getUniqueId().equals(player.getUniqueId());
+                });
+    }
+
+    @CommandHandler(
+            playerOnly = true,
+            name = "movecore",
+            permission = "kingdom.region.private.claim",
+            description = "cmd-inf.move-core.description")
+    public SubCommand moveCore = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.move-core.parameter.name",
+                hover = "cmd-inf.move-core.parameter.name-hover"
+        )
+        private String name;
+
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            Optional<PrivateRegion> optional = getStream(player)
+                    .filter(region -> region.getName().equals(name))
+                    .findFirst();
+            if(optional.isPresent()) {
+                PrivateRegion region = optional.get();
+                Chunk chunk = player.getLocation().getChunk();
+                ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
+                if(!chunkInfo.isClaimed() || !region.getId().equals(chunkInfo.getPrivateRegionId())){
+                    sender.sendMessage(processMessage("cmd-inf.move-core.not-claimed"));
+                    return;
+                }
+                Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
+                if(type == null || !type.isBlock()) {
+                    sender.sendMessage(processMessage("cmd-inf.core-type-err"));
+                    return;
+                }
+                PrivateRegionAPI.getInstance().moveCoreBlockTo(region, chunk.getWorld().getBlockAt(player.getLocation()));
+            }else {
+                sender.sendMessage(processMessage("cmd-inf.move-core.not-found"));
+            }
+        }
+        @Override
+        public List<String> tabComplete(CommandSender sender, int index){
+            if(sender instanceof Player) {
+                if (index == 0) {
+                    List<String> result = new ArrayList<>();
+                    getStream((Player) sender).forEach(region -> result.add(region.getName()));
+                    return result;
+                }
+            }
+            return new ArrayList<>();
         }
     };
+
+
 }

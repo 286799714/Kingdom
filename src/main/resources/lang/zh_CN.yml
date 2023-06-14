@@ -24,27 +24,33 @@ cmd-inf:
     description: 重新加载插件
     success: Kingdom插件重载完成
   create-private:
-    description: 创建一个私人区域
+    description: 创建一个私人领地
     parameter:
-      name: 区域名称
+      name: 领地名称
       name-hover: 字符串
     success: |-
-      区域创建成功。
-      输入/pr claim %name% 来为你的私人区域声明领地。
+      领地创建成功。
+      输入/pr claim %name% 来为你的私人领地声明区块。
     name-taken: §c名称已被占用
-    amount-limit: "§c你拥有的私人区域数量已经达到上限: %limit%"
+    amount-limit: "§c你能创建的私人领地数量已经达到上限: %limit%"
+  core-type-err: "§c在config.yml的 'private-region.claim.core-block' 选项设置了错误的方块类型(找不到对应的类型或不是方块)"
   claim:
-    description: 为私人区域声明一块居住区
+    description: 为私人领地声明一块区块
     parameter:
-      name: 区域名称
+      name: 领地名称
       name-hover: 字符串
-    not-found: §c找不到该名称对应的私人区域
-    core-type-err: "§c在config.yml的 'private-region.claim.core-block' 选项设置了错误的方块类型(找不到对应的类型或不是方块)"
-    claimed: "§c这个区块已被声明为: %type%"
-    world-unsupported: §c当前世界不允许声明居住区。
-    amount-limit: §c此区域的声明数量已达到上限：%limit%
+    not-found: §c找不到该名称对应的私人领地
+    claimed: §c这个区块已被占有
+    world-unsupported: §c当前世界不允许声明区块。
+    amount-limit: §c领地的声明数量已达到上限：%limit%
     success-living: 为 %region% 声明了一块居住区，区块坐标 %chunk%
+  move-core:
+    description: 移动私人区域的核心到你所在的位置
+    parameter:
+      name: 领地名称
+      name-hover: 字符串
+    not-found: §c找不到该名称对应的私人领地
+    not-claimed: §c这个区块不是你的私人领地
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
-  living: 居住区

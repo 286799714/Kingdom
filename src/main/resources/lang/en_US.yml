@@ -24,7 +24,7 @@ cmd-inf:
     description: Reload the plugin
     success: Plugin Kingdom reloaded successfully.
   create-private:
-    description: Create a private region
+    description: Create a Private Region
     parameter:
       name: name
       name-hover: String
@@ -32,19 +32,25 @@ cmd-inf:
       Successfully created a new private region.
       Input /pr claim %name% to claim a chunk for your Private Region。
     name-taken: §cThis name has already been taken.
-    amount-limit: "§cThe number of private regions you own has reached the upper limit: %limit%"
+    amount-limit: "§cThe number of private regions you create has reached the upper limit: %limit%"
+  core-type-err: "§cThe wrong block type is set in the 'private-region.claim.core-block' option of config.yml (could not find the corresponding type or not a block)"
   claim:
-    description: Claim a living chunk for your Private Region
+    description: Claim a chunk for your Private Region
     parameter:
       name: region name
       name-hover: String
     not-found: §cNo Private Region found for that name
-    core-type-err: "§cThe wrong block type is set in the 'private-region.claim.core-block' option of config.yml (could not find the corresponding type or not a block)"
-    claimed: "§cThis chunk has been claim as the type of: %type%"
+    claimed: "§cThis chunk has been occupied."
     world-unsupported: §cClaims are not allowed in this world.
     amount-limit: "§cThis region's claimed chunks have reached to limit: %limit%"
-    success-living: A living chunk has been claim by %region%. Chunk coordinate %chunk%
+    success-living: A chunk has been claim by %region%. Chunk coordinate %chunk%
+  move-core:
+    description: Move the core of Private Region to the current position.
+    parameter:
+      name: region name
+      name-hover: String
+    not-found: §cNo Private Region found for that name
+    not-claimed: §cThis chunk is not in your private region.
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
-  living: Living Area

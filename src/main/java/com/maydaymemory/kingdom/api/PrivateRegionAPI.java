@@ -2,18 +2,16 @@ package com.maydaymemory.kingdom.api;
 
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionClaimEvent;
+import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreMigrateEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCreateEvent;
 import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.*;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfoManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.Configuration;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -56,8 +54,6 @@ public class PrivateRegionAPI {
      * @return false if the claim is not successful.
      * */
     public boolean claim(PrivateRegion region, Chunk chunk){
-        List<String> worlds = config.getStringList("private-region.allow-worlds");
-        if(!worlds.contains(chunk.getWorld().getName())) return false;
         ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
         if(chunkInfo.isClaimed()) return false;
         int limit = config.getInt("private-region.claim.limit", 8);
@@ -69,12 +65,36 @@ public class PrivateRegionAPI {
         if(event.isCancelled()) return false;
         chunkInfo.setResidentChunk(region);
         if(region.getMainChunk() == null){
-            region.setMainChunk(chunk);
-            chunkInfo.setMainChunk(true);
-            chunk.getWorld().setType(chunkInfo.getCoreX(), chunkInfo.getCoreY(), chunkInfo.getCoreZ(), type);
+            Block block = chunk.getBlock(7,0,7);
+            Block target = chunk.getWorld().getHighestBlockAt(block.getLocation());
+            moveCoreBlockTo(region, target);
         }
         else region.addResidentialChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         return true;
+    }
+
+    public void moveCoreBlockTo(PrivateRegion region, Block target){
+        PrivateRegionCoreMigrateEvent event = new PrivateRegionCoreMigrateEvent(region, target);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
+        target = event.getTarget();
+        ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(target.getChunk());
+        if(!chunkInfo.isClaimed()) return;
+        if(!region.getId().equals(chunkInfo.getPrivateRegionId())) return;
+        Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
+        if(type == null || !type.isBlock()) return;
+        Chunk oldChunk = region.getMainChunk();
+        if(oldChunk != null) {
+            ChunkInfo oldChunkInfo = ChunkInfoManager.getInstance().getOrCreate(oldChunk);
+            oldChunkInfo.setMainChunk(false);
+            oldChunk.getWorld().setType(oldChunkInfo.getCoreX(), oldChunkInfo.getCoreY(), oldChunkInfo.getCoreZ(), Material.AIR);
+        }
+        region.setMainChunk(target.getChunk());
+        chunkInfo.setMainChunk(true);
+        chunkInfo.setCoreX(target.getX());
+        chunkInfo.setCoreY(target.getY());
+        chunkInfo.setCoreZ(target.getZ());
+        target.setType(type);
     }
 
     public PrivateRegion fromName(String name){
