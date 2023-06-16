@@ -82,7 +82,7 @@ cmd-inf:
     name-error: §c未找到货币.
     type-error: §c没有对应的账户类型.
     account-error: §c未找到账户.
-    amount-error: §c账户剩余货币不足.
+    amount-error: §c未能扣费成功，请检查账户余额
     success: "你从%account%中扣除了%change% %display%,现在该账户还剩下%amount% %display%."
   eco-deposit:
     description: 给指定账户指定数量的货币

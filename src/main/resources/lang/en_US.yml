@@ -82,7 +82,7 @@ cmd-inf:
     name-error: §cCurrency not found.
     type-error: §cIllegal account type.
     account-error: §cAccount not found.
-    amount-error: §cThere's no enough currency in this account to withdraw.
+    amount-error: §cFailed to withdraw successfully, please check account balance.
     success: "You have withdrawn %change% %display% from %account%,which has %amount% %display% left."
   eco-deposit:
     description: Give the given amount of currency to the given account.

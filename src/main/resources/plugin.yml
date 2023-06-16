@@ -8,11 +8,11 @@ permissions:
     children:
       kingdom.player: true
       kingdom.economy.create: true
+      kingdom.economy.withdraw: true
+      kingdom.economy.deposit: true
   kingdom.player:
     default: true
     children:
-      kingdom.economy.withdraw: true
-      kingdom.economy.deposit: true
       kingdom.economy.query: true
       kingdom.region.private.create: true
       kingdom.region.private.claim: true

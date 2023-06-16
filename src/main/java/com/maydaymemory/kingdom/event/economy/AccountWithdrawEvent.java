@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
-public class AccountDepositEvent extends AccountEvent implements Cancellable {
+public class AccountWithdrawEvent extends AccountEvent implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
@@ -15,7 +15,7 @@ public class AccountDepositEvent extends AccountEvent implements Cancellable {
     private Currency currency;
     private int amount;
 
-    public AccountDepositEvent(Account account, Currency currency, int amount) {
+    public AccountWithdrawEvent(Account account, Currency currency, int amount) {
         super(account);
         this.currency = currency;
         this.amount = amount;

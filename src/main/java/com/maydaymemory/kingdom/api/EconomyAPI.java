@@ -1,8 +1,11 @@
 package com.maydaymemory.kingdom.api;
 
+import com.maydaymemory.kingdom.event.economy.AccountDepositEvent;
+import com.maydaymemory.kingdom.event.economy.AccountWithdrawEvent;
 import com.maydaymemory.kingdom.model.economy.Account;
 import com.maydaymemory.kingdom.model.economy.Currency;
 import com.maydaymemory.kingdom.model.economy.EconomyManager;
+import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -45,14 +48,17 @@ public class EconomyAPI {
         return EconomyManager.getManager().getAccounts();
     }
 
-    /**
-     * @return false if the account balance is insufficient
-     */
     public boolean withdraw(Currency currency, Account account, int amount){
+        AccountWithdrawEvent event = new AccountWithdrawEvent(account, currency, amount);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
         return account.withdraw(currency,Math.abs(amount));
     }
 
     public void deposit(Currency currency, Account account, int amount){
+        AccountDepositEvent event = new AccountDepositEvent(account, currency, amount);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return;
         account.deposit(currency,Math.abs(amount));
     }
 }
