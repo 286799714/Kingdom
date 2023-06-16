@@ -3,6 +3,8 @@ package com.maydaymemory.kingdom.command;
 import com.maydaymemory.kingdom.Reference;
 import com.maydaymemory.kingdom.core.command.*;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
+import com.maydaymemory.kingdom.model.economy.Account;
+import com.maydaymemory.kingdom.model.region.PrivateRegion;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
@@ -19,6 +21,8 @@ public class MyProviders {
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, booleanProvider);
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, intProvider);
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, playerProvider);
+        ParameterManager.registerProvider(Reference.PLUGIN_NAME, privateRegionProvider);
+
     }
 
     public static final ParameterProvider<String> stringProvider =  new ParameterProvider<String>() {
@@ -162,6 +166,22 @@ public class MyProviders {
         @Override
         public ParameterToken<Player> getToken() {
             return new ParameterToken<Player>() {};
+        }
+    };
+
+    public static final ParameterProvider<PrivateRegion> privateRegionProvider = new ParameterProvider<PrivateRegion>() {
+        @Override
+        public PrivateRegion translate(CommandSender sender, String[] args, int index, RootCommand command, SubCommand subCommand, CommandMeta meta) {
+            PrivateRegion region = PrivateRegion.fromName(args[index]);
+            if(region == null) {
+                sender.sendMessage(lang.getString("cmd.pr-not-found", "cmd.pr-not-found").replaceAll("%region%", args[index]));
+            }
+            return region;
+        }
+
+        @Override
+        public ParameterToken<PrivateRegion> getToken() {
+            return new ParameterToken<PrivateRegion>() {};
         }
     };
 }

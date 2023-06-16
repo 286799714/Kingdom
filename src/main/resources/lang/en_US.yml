@@ -54,52 +54,68 @@ cmd-inf:
   eco-create:
     description: Create a new type of currency.
     parameter:
-      name: The name of the currency,used in code and command.
-      name-hover: String
-      display: The name shown to players.
-      display-hover: String
-    exist: The name of the currency already exist.
+      name: id
+      name-hover: |-
+        String
+        The name of the currency used in code and command.
+      display: name
+      display-hover: |-
+        String
+        The name to display
+    exist: §cThe id of the currency already exist.
     success: "%display% has been created successfully."
   eco-withdraw:
     description: Withdraw the given amount of currency from the given account.
     parameter:
-      name: The name of currency.
+      name: currency id
       name-hover: String
-      type: The type of the account,including PLAYER and REGION.
-      type-hover: String
-      account: The name of the player or the region.
-      account-hover: String
-      amount: The number of the currency.
+      type: account type
+      type-hover: |-
+        String
+        available fields: PLAYER and REGION.
+      account: account name
+      account-hover: |-
+        String
+        The name of player or region.
+      amount: amount
       amount-hover: Integer
-    name-error: Currency not found.
-    type-error: Illegal account type.
-    account-error: Account not found.
-    amount-error: There's no enough currency in this account to withdraw.
+    name-error: §cCurrency not found.
+    type-error: §cIllegal account type.
+    account-error: §cAccount not found.
+    amount-error: §cThere's no enough currency in this account to withdraw.
     success: "You have withdrawn %change% %display% from %account%,which has %amount% %display% left."
   eco-deposit:
     description: Give the given amount of currency to the given account.
     parameter:
-      name: The name of currency.
+      name: currency id
       name-hover: String
-      type: The type of the account,including player's and region's.
-      type-hover: String
-      account: The name of the player or the region.
-      account-hover: String
-      amount: The number of the currency.
+      type: account type
+      type-hover: |-
+        String
+        available fields: PLAYER and REGION.
+      account: account name
+      account-hover: |-
+        String
+        The name of player or region.
+      amount: amount
       amount-hover: Integer
-    name-error: Currency not found.
-    type-error: Illegal account type.
-    account-error: Account not found.
+    name-error: §cCurrency not found.
+    type-error: §cIllegal account type.
+    account-error: §cAccount not found.
     success: "You have deposit %change% %display% to %account%,which has %amount% %display% now."
   eco-query:
     description: Query the amount of the currency which the given player have.
     parameter:
-      type: The type of the account,including player's and region's.
-      type-hover: String
-      account: The name of the player or the region.
-      account-hover: String
-    type-error: Illegal account type.
-    account-error: Account not found.
+      type: account type
+      type-hover: |-
+        String
+        available fields: PLAYER and REGION.
+      account: account name
+      account-hover: |-
+        String
+        The name of player or region.
+    type-error: §cIllegal account type.
+    account-error: §cAccount not found.
     success-1: "%account%'s account:"
     success-2: "%display% - %amount%"
 region:

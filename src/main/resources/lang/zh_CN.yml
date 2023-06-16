@@ -54,52 +54,66 @@ cmd-inf:
   eco-create:
     description: 创建一种新货币
     parameter:
-      name: 货币的名字，通常在指令和代码中使用
-      name-hover: 字符串
-      display: 显示给玩家的货币名字
-      display-hover: 字符串
-    exist: 货币已经存在.
+      name: id
+      name-hover: |-
+        字符串
+        用于代码和指令中的货币名称
+      display: 名称
+      display-hover: |-
+        字符串
+        用于展示的货币名称
+    exist: §c使用这个id的货币已经存在.
     success: "成功创建货币%display%."
   eco-withdraw:
     description: 从给定的账户中扣除给定的货币数量
     parameter:
-      name: 货币名
+      name: 货币id
       name-hover: 字符串
-      type: 账户类型,可选参数有PLAYER(玩家)和REGION(区域)
-      type-hover: 字符串
+      type: 账户类型
+      type-hover: |-
+        字符串
+        可选字段:PLAYER(玩家) REGION(区域)
       account: 账户名
-      account-hover: 字符串
-      amount: 货币数量
+      account-hover: |-
+        字符串
+        为玩家的名称或区域的名称
+      amount: 数量
       amount-hover: 整数
-    name-error: 未找到货币.
-    type-error: 没有对应的账户类型.
-    account-error: 未找到账户.
-    amount-error: 账户剩余货币不足.
+    name-error: §c未找到货币.
+    type-error: §c没有对应的账户类型.
+    account-error: §c未找到账户.
+    amount-error: §c账户剩余货币不足.
     success: "你从%account%中扣除了%change% %display%,现在该账户还剩下%amount% %display%."
   eco-deposit:
     description: 给指定账户指定数量的货币
     parameter:
-      name: 货币名
+      name: 货币id
       name-hover: 字符串
-      type: 账户类型,可选参数有PLAYER(玩家)和REGION(区域)
-      type-hover: 字符串
+      type: 账户类型
+      type-hover: |-
+        字符串
+        可选字段:PLAYER(玩家) REGION(区域)
       account: 账户名
-      account-hover: 字符串
+      account-hover: |-
+        字符串
+        为玩家的名称或区域的名称
       amount: 货币数量
       amount-hover: 整数
-    name-error: 未找到货币.
-    type-error: 没有对应的账户类型.
-    account-error: 未找到账户.
+    name-error: §c未找到货币.
+    type-error: §c没有对应的账户类型.
+    account-error: §c未找到账户.
     success: "你向%account%中存入了%change% %display%,现在该账户有%amount% %display%."
   eco-query:
     description: 查询指定账户所拥有的货币
     parameter:
       type: 账户类型
-      type-hover: 字符串
+      type-hover: |-
+        字符串
+        可选字段:PLAYER(玩家) REGION(区域)
       account: 账户名
       account-hover: 字符串
-    type-error: 没有对应的账户类型.
-    account-error: 未找到账户.
+    type-error: §c没有对应的账户类型.
+    account-error: §c未找到账户.
     success-1: "%account%的账户:"
     success-2: "%display% - %amount%"
 region:

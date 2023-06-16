@@ -1,16 +1,16 @@
-package com.maydaymemory.kingdom.economy;
+package com.maydaymemory.kingdom.model.economy;
 
 public class Currency{
-    private String name;
+    private String id;
     private String displayName;
 
-    Currency(String name,String displayName){
-        this.name=name;
+    Currency(String id,String displayName){
+        this.id=id;
         this.displayName=displayName;
     }
 
     public String getName() {
-        return name;
+        return id;
     }
 
     public String getDisplayName() {

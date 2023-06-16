@@ -1,14 +1,15 @@
 package com.maydaymemory.kingdom.command;
 
+import com.maydaymemory.kingdom.api.EconomyAPI;
 import com.maydaymemory.kingdom.core.command.CommandHandler;
 import com.maydaymemory.kingdom.core.command.ParameterSign;
 import com.maydaymemory.kingdom.core.command.SubCommand;
-import com.maydaymemory.kingdom.economy.Account;
-import com.maydaymemory.kingdom.economy.Currency;
-import com.maydaymemory.kingdom.economy.EconomyManager;
+import com.maydaymemory.kingdom.model.economy.Account;
+import com.maydaymemory.kingdom.model.economy.Currency;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EconomyCommand extends BaseCommand{
     public EconomyCommand() {
@@ -24,7 +25,7 @@ public class EconomyCommand extends BaseCommand{
                 name = "cmd-inf.eco-create.parameter.name",
                 hover = "cmd-inf.eco-create.parameter.name-hover"
         )
-        private String name;
+        private String id;
         @ParameterSign(
                 name = "cmd-inf.eco-create.parameter.display",
                 hover = "cmd-inf.eco-create.parameter.display-hover"
@@ -32,12 +33,12 @@ public class EconomyCommand extends BaseCommand{
         private String display;
         @Override
         public void execute(CommandSender sender, String label, String[] args) {
-            Currency currency=EconomyManager.getManager().getCurrency(name);
+            Currency currency=EconomyAPI.getInstance().getCurrency(id);
             if(currency!=null){
                 sender.sendMessage(processMessage("cmd-inf.eco-create.exist"));
                 return;
             }
-            currency=EconomyManager.getManager().createCurrency(name,display);
+            currency= EconomyAPI.getInstance().createCurrency(id, display.replaceAll("&", "§"));
             sender.sendMessage(processMessage("cmd-inf.eco-create.success",currency));
         }
     };
@@ -69,7 +70,7 @@ public class EconomyCommand extends BaseCommand{
         private int amount;
         @Override
         public void execute(CommandSender sender, String label, String[] args) {
-            Currency currency=EconomyManager.getManager().getCurrency(name);
+            Currency currency=EconomyAPI.getInstance().getCurrency(name);
             if(currency==null){
                 sender.sendMessage(processMessage("cmd-inf.eco-withdraw.name-error"));
                 return;
@@ -81,12 +82,12 @@ public class EconomyCommand extends BaseCommand{
                 sender.sendMessage(processMessage("cmd-inf.eco-withdraw.type-error"));
                 return;
             }
-            Account account=EconomyManager.getManager().getAccount(type,this.account);
+            Account account=EconomyAPI.getInstance().getAccount(type,this.account);
             if(account==null){
                 sender.sendMessage(processMessage("cmd-inf.eco-withdraw.account-error"));
                 return;
             }
-            if(!account.withdraw(currency,Math.abs(amount))){
+            if(!EconomyAPI.getInstance().withdraw(currency, account, amount)){
                 sender.sendMessage(processMessage("cmd-inf.eco-withdraw.amount-error"));
                 return;
             }
@@ -95,8 +96,14 @@ public class EconomyCommand extends BaseCommand{
 
         @Override
         public List<String> tabComplete(CommandSender sender, int index) {
+            if(index==0){
+                return EconomyAPI.getInstance().getAllCurrencies().stream().map(Currency::getName).collect(Collectors.toList());
+            }
             if(index==1){
                 return Arrays.asList("PLAYER","REGION");
+            }
+            if(index==2){
+                return EconomyAPI.getInstance().getAllAccounts().stream().map(Account::getName).collect(Collectors.toList());
             }
             return new ArrayList<>();
         }
@@ -129,7 +136,7 @@ public class EconomyCommand extends BaseCommand{
         private int amount;
         @Override
         public void execute(CommandSender sender, String label, String[] args) {
-            Currency currency=EconomyManager.getManager().getCurrency(name);
+            Currency currency=EconomyAPI.getInstance().getCurrency(name);
             if(currency==null){
                 sender.sendMessage(processMessage("cmd-inf.eco-deposit.name-error"));
                 return;
@@ -141,19 +148,25 @@ public class EconomyCommand extends BaseCommand{
                 sender.sendMessage(processMessage("cmd-inf.eco-deposit.type-error"));
                 return;
             }
-            Account account=EconomyManager.getManager().getAccount(type,this.account);
+            Account account=EconomyAPI.getInstance().getAccount(type,this.account);
             if(account==null){
                 sender.sendMessage(processMessage("cmd-inf.eco-deposit.account-error"));
                 return;
             }
-            account.deposit(currency,Math.abs(amount));
+            EconomyAPI.getInstance().deposit(currency, account, amount);
             sender.sendMessage(processMessage("cmd-inf.eco-deposit.success",currency,account,Math.abs(amount)));
         }
 
         @Override
         public List<String> tabComplete(CommandSender sender, int index) {
+            if(index==0){
+                return EconomyAPI.getInstance().getAllCurrencies().stream().map(Currency::getName).collect(Collectors.toList());
+            }
             if(index==1){
                 return Arrays.asList("PLAYER","REGION");
+            }
+            if(index==2){
+                return EconomyAPI.getInstance().getAllAccounts().stream().map(Account::getName).collect(Collectors.toList());
             }
             return new ArrayList<>();
         }
@@ -183,7 +196,7 @@ public class EconomyCommand extends BaseCommand{
                 sender.sendMessage(processMessage("cmd-inf.eco-query.type-error"));
                 return;
             }
-            Account account=EconomyManager.getManager().getAccount(type,this.account);
+            Account account = EconomyAPI.getInstance().getAccount(type,this.account);
             if(account==null){
                 sender.sendMessage(processMessage("cmd-inf.eco-query.account-error"));
                 return;
@@ -198,6 +211,9 @@ public class EconomyCommand extends BaseCommand{
         public List<String> tabComplete(CommandSender sender, int index) {
             if(index==0){
                 return Arrays.asList("PLAYER","REGION");
+            }
+            if(index==1){
+                return EconomyAPI.getInstance().getAllAccounts().stream().map(Account::getName).collect(Collectors.toList());
             }
             return new ArrayList<>();
         }

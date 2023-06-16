@@ -14,6 +14,8 @@ The command sender can only claim for his/her own private region, unless he/she 
 name - the name of Private Region.   
 permission: kingdom.region.private.claim   
 Move the core of Private Region to the position of sender.
+## Economy
+1. 
 ## Kingdom
 1. /kingdom reload   
 permission: kingdom.admin    

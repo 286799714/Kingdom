@@ -1,4 +1,4 @@
-package com.maydaymemory.kingdom.economy;
+package com.maydaymemory.kingdom.model.economy;
 
 import java.util.HashMap;
 import java.util.Map;
