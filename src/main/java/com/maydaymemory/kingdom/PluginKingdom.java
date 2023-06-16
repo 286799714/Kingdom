@@ -8,6 +8,7 @@ import com.maydaymemory.kingdom.core.command.CommandRegistry;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.config.ConfigUtil;
 import com.maydaymemory.kingdom.core.language.LanguageUtil;
+import com.maydaymemory.kingdom.listener.EconomyHandler;
 import com.maydaymemory.kingdom.model.economy.EconomyManager;
 import com.maydaymemory.kingdom.listener.BanBreakingHandler;
 import com.maydaymemory.kingdom.listener.PrivateRegionCoreInteractHandler;
@@ -44,6 +45,7 @@ public class PluginKingdom extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BanBreakingHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionCoreInteractHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionRedstoneHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new EconomyHandler(), this);
     }
 
     @Override
