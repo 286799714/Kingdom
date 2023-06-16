@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom;
 
+import com.maydaymemory.kingdom.command.EconomyCommand;
 import com.maydaymemory.kingdom.command.KingdomCommand;
 import com.maydaymemory.kingdom.command.PrivateRegionCommand;
 import com.maydaymemory.kingdom.command.MyProviders;
@@ -7,7 +8,9 @@ import com.maydaymemory.kingdom.core.command.CommandRegistry;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.config.ConfigUtil;
 import com.maydaymemory.kingdom.core.language.LanguageUtil;
+import com.maydaymemory.kingdom.economy.EconomyManager;
 import com.maydaymemory.kingdom.listener.BanBreakingHandler;
+import com.maydaymemory.kingdom.listener.PlayerLoginHandler;
 import com.maydaymemory.kingdom.listener.PrivateRegionCoreInteractHandler;
 import com.maydaymemory.kingdom.listener.PrivateRegionRedstoneHandler;
 import com.maydaymemory.kingdom.model.region.*;
@@ -15,6 +18,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.IOException;
 
 public class PluginKingdom extends JavaPlugin {
     private static PluginKingdom instance;
@@ -34,6 +39,7 @@ public class PluginKingdom extends JavaPlugin {
         MyProviders.register();
         CommandRegistry.register(new KingdomCommand());
         CommandRegistry.register(new PrivateRegionCommand());
+        CommandRegistry.register(new EconomyCommand());
         //Region Factory register
         MyRegionFactory regionFactory = new MyRegionFactory();
         RegionManagerProvider.getInstance().getRegionManager().matchFactory(new RegionTypeToken<PrivateRegion>(){}, regionFactory);
@@ -41,6 +47,25 @@ public class PluginKingdom extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BanBreakingHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionCoreInteractHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionRedstoneHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerLoginHandler(),this);
+        Bukkit.getScheduler().runTaskTimer(this,()-> {
+            try {
+                EconomyManager.getManager().save();
+            } catch (IOException e) {
+                Bukkit.getLogger().info(ChatColor.RED+"Fail to save Economy System:");
+                e.printStackTrace();
+            }
+        },2400,2400);
+    }
+
+    @Override
+    public void onDisable() {
+        try {
+            EconomyManager.getManager().save();
+        }catch (Exception e) {
+            Bukkit.getLogger().info(ChatColor.RED + "Fail to save Economy System:");
+            e.printStackTrace();
+        }
     }
 
     public void loadPlugin(){
@@ -50,6 +75,12 @@ public class PluginKingdom extends JavaPlugin {
         String language = config.getString("language");
         if(!LanguageUtil.load(this, language)){
             Bukkit.getLogger().info(ChatColor.RED + "Error to load language configuration: " + language + ".yml");
+        }
+        try {
+            EconomyManager.getManager().load();
+        }catch (Exception e) {
+            Bukkit.getLogger().info(ChatColor.RED + "Fail to load Economy System:");
+            e.printStackTrace();
         }
     }
 
