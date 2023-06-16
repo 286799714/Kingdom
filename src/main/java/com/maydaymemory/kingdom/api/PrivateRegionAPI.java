@@ -107,6 +107,18 @@ public class PrivateRegionAPI {
         else return null;
     }
 
+    /**
+     * @return the Private Region that has claimed this chunk.
+     * */
+    public PrivateRegion fromChunk(Chunk chunk){
+        ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
+        if(chunkInfo.isClaimed()){
+            return fromId(chunkInfo.getPrivateRegionId());
+        }else {
+            return null;
+        }
+    }
+
     public Set<PrivateRegion> getAllPrivateRegion(){
         return RegionManagerProvider.getInstance().getRegionManager().getRegionMap().values().stream()
                 .filter(region -> region instanceof PrivateRegion)
