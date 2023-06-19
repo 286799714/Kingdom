@@ -5,11 +5,8 @@ import com.maydaymemory.kingdom.core.command.CommandRegistry;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.config.ConfigUtil;
 import com.maydaymemory.kingdom.core.language.LanguageUtil;
-import com.maydaymemory.kingdom.listener.EconomyHandler;
+import com.maydaymemory.kingdom.listener.*;
 import com.maydaymemory.kingdom.model.economy.EconomyManager;
-import com.maydaymemory.kingdom.listener.BanBreakingHandler;
-import com.maydaymemory.kingdom.listener.PrivateRegionCoreInteractHandler;
-import com.maydaymemory.kingdom.listener.PrivateRegionRedstoneHandler;
 import com.maydaymemory.kingdom.model.region.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +29,7 @@ public class PluginKingdom extends JavaPlugin {
     public void onEnable(){
         //Command register
         MyProviders.register();
-        CommandRegistry.register(new KingdomCommand());
+        CommandRegistry.register(new OperatorCommand());
         CommandRegistry.register(new PrivateRegionCommand());
         CommandRegistry.register(new EconomyCommand());
         CommandRegistry.register(new TeleportCommand());
@@ -40,10 +37,11 @@ public class PluginKingdom extends JavaPlugin {
         MyRegionFactory regionFactory = new MyRegionFactory();
         RegionManagerProvider.getInstance().getRegionManager().matchFactory(new RegionTypeToken<PrivateRegion>(){}, regionFactory);
         //Listener register
-        Bukkit.getPluginManager().registerEvents(new BanBreakingHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new PrivateRegionBuildingHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionCoreInteractHandler(), this);
         Bukkit.getPluginManager().registerEvents(new PrivateRegionRedstoneHandler(), this);
         Bukkit.getPluginManager().registerEvents(new EconomyHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new GUIHandler(), this);
     }
 
     @Override
@@ -58,10 +56,10 @@ public class PluginKingdom extends JavaPlugin {
 
     public void loadPlugin(){
         ConfigUtil.saveDefault(this, "config.yml");
-        ConfigUtil.load(this);
+        ConfigUtil.load(this, "anvilgui");
         LanguageUtil.saveDefault(this);
         String language = config.getString("language");
-        if(!LanguageUtil.load(this, language)){
+        if(!LanguageUtil.load(this, language, "anvilgui")){
             Bukkit.getLogger().info(ChatColor.RED + "Error to load language configuration: " + language + ".yml");
         }
         EconomyManager.getManager().load();

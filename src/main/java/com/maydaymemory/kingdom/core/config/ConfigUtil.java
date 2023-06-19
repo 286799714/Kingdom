@@ -68,8 +68,11 @@ public class ConfigUtil {
         }
         return configuration;
     }
-
     public static void load(Plugin plugin) {
+        load(plugin, null);
+    }
+
+    public static void load(Plugin plugin, String bypass) {
         //Inject into the static field in all class annotated by ConfigInject in the plugin.
         URL url = plugin.getClass().getResource("");
         if(url == null) return;
@@ -86,6 +89,7 @@ public class ConfigUtil {
                             .replaceAll("\\\\","/")
                             .replaceAll("/", ".")
                             .replaceAll(".class", "");
+                    if(bypass != null && entry.getName().contains(bypass)) continue;
                     Class<?> clazz = classLoader.loadClass(cp);
                     if(clazz == null) continue;
                     for(Field field : clazz.getDeclaredFields()){

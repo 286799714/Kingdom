@@ -5,9 +5,9 @@ import com.maydaymemory.kingdom.core.command.CommandHandler;
 import com.maydaymemory.kingdom.core.command.SubCommand;
 import org.bukkit.command.CommandSender;
 
-public class KingdomCommand extends BaseCommand{
+public class OperatorCommand extends BaseCommand{
 
-    public KingdomCommand() {
+    public OperatorCommand() {
         super("kingdom");
     }
 

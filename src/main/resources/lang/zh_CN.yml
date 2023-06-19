@@ -1,4 +1,4 @@
-# 作者: MaydayMemory
+# 作者: MaydayMemory   acnull
 cmd:
   command-not-found: §c未找到命令：§f%command%§c。
   player-only: §c只有玩家可以执行这个命令。
@@ -137,7 +137,8 @@ region:
 gui:
   search:
     material: NETHER_STAR
-    name: "§b输入领地名"
+    name: "搜索领地..."
+    text: "§b输入领地名"
     lore:
       - "§e输入你要搜索的领地名"
       - "§e点击搜索"

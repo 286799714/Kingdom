@@ -16,7 +16,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 import java.util.Set;
 
-public class BanBreakingHandler implements Listener {
+public class PrivateRegionBuildingHandler implements Listener {
     @LanguageInject
     private static Configuration lang;
 

@@ -1,4 +1,4 @@
-# Author: MaydayMemory
+# Author: MaydayMemory  acnull
 cmd:
   player-not-found: '§cPlayer not found: §f%player% ~'
   command-not-found: '§cCommand not found: §f%command%§c.'
@@ -139,7 +139,8 @@ region:
 gui:
   search:
     material: NETHER_STAR
-    name: "§bEnter the name"
+    name: Searching Private Region...
+    text: "§bEnter the name"
     lore:
       - "§eEnter the name of you want to search to the rename bar."
       - "§eThen Click to Search For Regions by Name."

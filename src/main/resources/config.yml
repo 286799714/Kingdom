@@ -24,13 +24,18 @@ private-region:
   # The default currency used to operate the region.
   default-currency: default
 
-#Teleport Setting
+# ################################ #
+#                                  #
+#            Teleport              #
+# ################################ #
 teleport:
-  #"per" block's distance between two regions' "cost"
+  # "per" block's distance between two regions' "cost"
   per: 500
   cost: 1
-  #The extra cost of trans-world teleporting.
+
+  # The extra cost of trans-world teleporting.
   world: 1
+
   item:
     material: DYE
     name: "§a§lRegion Stone"
