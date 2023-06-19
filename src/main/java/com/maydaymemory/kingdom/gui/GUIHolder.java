@@ -1,4 +1,4 @@
-package com.maydaymemory.kingdom.model.gui;
+package com.maydaymemory.kingdom.gui;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;

@@ -1,4 +1,4 @@
-package com.maydaymemory.kingdom.model.gui;
+package com.maydaymemory.kingdom.gui;
 
 import com.maydaymemory.kingdom.PluginKingdom;
 import com.maydaymemory.kingdom.core.language.LanguageInject;

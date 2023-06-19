@@ -1,8 +1,8 @@
 package com.maydaymemory.kingdom.listener;
 
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreInteractEvent;
-import com.maydaymemory.kingdom.model.gui.GUIHolder;
-import com.maydaymemory.kingdom.model.gui.SearchRegionGUIHolder;
+import com.maydaymemory.kingdom.gui.GUIHolder;
+import com.maydaymemory.kingdom.gui.SearchRegionGUIHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
