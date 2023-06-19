@@ -35,7 +35,6 @@ public class SearchRegionGUIHolder extends GUIHolder {
                             AnvilGUI.ResponseAction.run(()->player.sendMessage(stateSnapshot.getText())));
                 })
                 .itemLeft(button)
-                .preventClose()
                 .text(lang.getString("gui.search.text"))
                 .title(lang.getString("gui.search.name"))
                 .plugin(PluginKingdom.getInstance());

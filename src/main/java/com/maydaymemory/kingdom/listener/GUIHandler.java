@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.InventoryHolder;
 
 public class GUIHandler implements Listener {
@@ -28,5 +29,14 @@ public class GUIHandler implements Listener {
         GUIHolder guiHolder = (GUIHolder) holder;
         guiHolder.onClick(event.getSlot());
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDragInventory(InventoryDragEvent event){
+        if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof GUIHolder) event.setCancelled(true);
     }
 }
