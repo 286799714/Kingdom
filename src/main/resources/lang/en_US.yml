@@ -118,6 +118,51 @@ cmd-inf:
     account-error: §cAccount not found.
     success-1: "%account%'s account:"
     success-2: "%display% - %amount%"
+  teleport-to:
+    description: "Teleport to the given region"
+    parameter:
+      type: region name
+      account-hover: |-
+        String
+        The name of the region.
+    success: "§aYour request has been sent to %player%"
+    fail-name: "§cThe region doesn't exist!"
+    fail-region: "§cYou aren't in any region,in which case,the teleporting is banned."
+    fail-offline: "§cThe owner of the region is offline!"
+  teleport-yes:
+    description: "Accept your last teleporting request"
+  teleport-no:
+    description: "Refuse your last teleporting request"
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
+gui:
+  search:
+    material: NETHER_STAR
+    name: "§bEnter the name"
+    lore:
+      - "§eEnter the name of you want to search to the rename bar."
+      - "§eThen Click to Search For Regions by Name."
+  result:
+    title: "§aThe Result of search:§b§l %page% §aof §b§l%total_page%"
+    button-next:
+      material: NETHER_STAR
+      name: "§bThe next page"
+      lore:
+        - "§bNow you're at %page% of %page_total%"
+    button-region:
+      material: GOLD_BLOCK
+      name: "§bClick to teleport to %name% by %owner%"
+      lore:
+        - "§b distance:%distance% cost:%cost%"
+teleport:
+  request:
+    - "§a§l %player% §b§l wants to teleport to your §c§l %region%"
+  #use "/" to split the message.
+  request-confirm: "§a§l---/§b§l[Accept]/§a§l---/§c§l[Refuse]/§a§l---"
+  agree1: "§a§lYou have agreed the request."
+  agree2: "§a§lYour teleport request has been agreed and you'll be teleported."
+  refuse1: "§a§lYou have refused the request."
+  refuse2: "§c§lYour request has been refused!"
+  null: "You don't have any request."
+  fail: "You don't have enough items to teleport."

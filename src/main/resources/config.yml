@@ -20,3 +20,20 @@ private-region:
     # The limit of claiming chunks for Private Region
     limit: 8
     core-block: BEACON
+
+  # The default currency used to operate the region.
+  default-currency: default
+
+#Teleport Setting
+teleport:
+  #"per" block's distance between two regions' "cost"
+  per: 500
+  cost: 1
+  #The extra cost of trans-world teleporting.
+  world: 1
+  item:
+    material: DYE
+    name: "§a§lRegion Stone"
+    lore:
+      - "§cThe stone has some special space energy inside."
+      - "§cConsequently,it's used to teleport."

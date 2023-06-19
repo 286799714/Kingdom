@@ -1,9 +1,6 @@
 package com.maydaymemory.kingdom;
 
-import com.maydaymemory.kingdom.command.EconomyCommand;
-import com.maydaymemory.kingdom.command.KingdomCommand;
-import com.maydaymemory.kingdom.command.PrivateRegionCommand;
-import com.maydaymemory.kingdom.command.MyProviders;
+import com.maydaymemory.kingdom.command.*;
 import com.maydaymemory.kingdom.core.command.CommandRegistry;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.config.ConfigUtil;
@@ -38,6 +35,7 @@ public class PluginKingdom extends JavaPlugin {
         CommandRegistry.register(new KingdomCommand());
         CommandRegistry.register(new PrivateRegionCommand());
         CommandRegistry.register(new EconomyCommand());
+        CommandRegistry.register(new TeleportCommand());
         //Region Factory register
         MyRegionFactory regionFactory = new MyRegionFactory();
         RegionManagerProvider.getInstance().getRegionManager().matchFactory(new RegionTypeToken<PrivateRegion>(){}, regionFactory);

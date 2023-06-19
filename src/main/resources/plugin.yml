@@ -16,3 +16,4 @@ permissions:
       kingdom.economy.query: true
       kingdom.region.private.create: true
       kingdom.region.private.claim: true
+      kingdom.teleport: true

@@ -116,6 +116,51 @@ cmd-inf:
     account-error: §c未找到账户.
     success-1: "%account%的账户:"
     success-2: "%display% - %amount%"
+  teleport-to:
+    description: "传送到指定的领地"
+    parameter:
+      type: region name
+      account-hover: |-
+        String
+        The name of the region.
+    success: "§a以得请求已经发送给%player%"
+    fail-name: "§c领地不存在!"
+    fail-region: "§c你不处于任何领地，无法传送"
+    fail-offline: "§c这个领地的主人已经离线"
+  teleport-yes:
+    description: "接受上一个传送请求"
+  teleport-no:
+    description: "拒绝上一个传送请求"
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
+gui:
+  search:
+    material: NETHER_STAR
+    name: "§b输入领地名"
+    lore:
+      - "§e输入你要搜索的领地名"
+      - "§e点击搜索"
+  result:
+    title: "§a搜索结果:第§b§l %page% §a/ §b§l%total_page%§a页"
+    button-next:
+      material: NETHER_STAR
+      name: "§b下一页"
+      lore:
+        - "§b现在你在第%page%/%page_total%页"
+    button-region:
+      material: GOLD_BLOCK
+      name: "§b点击传送到%owner%的领地%name%"
+      lore:
+        - "§b 距离: %distance% 花费: %cost%"
+teleport:
+  request:
+    - "§a§l %player% §b§l 想要传送到你的领地 §c§l %region%"
+  #使用 "/" 来分割消息.
+  request-confirm: "§a§l---/§b§l[同意]/§a§l---/§c§l[拒绝]/§a§l---"
+  agree1: "§a§l你同意了%player%'的请求"
+  agree2: "§a§l你的传送请求被同意了，你将被传送到指定领地"
+  refuse1: "§a§l你拒绝了%player%'的请求"
+  refuse2: "§c§l你的传送请求被拒绝了"
+  null: "你没有收到任何请求"
+  fail: "你没有足够的物品去传送"
