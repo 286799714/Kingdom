@@ -145,7 +145,7 @@ gui:
       - "§e输入你要搜索的领地名"
       - "§e点击搜索"
   result:
-    title: "§a搜索结果:第§b§l %page% §a/ §b§l%total_page%§a页"
+    title: "§0搜索结果:第 §b§l%page%§0/§c§l%total_page%§0 页"
     button-next:
       material: NETHER_STAR
       name: "§b下一页"
@@ -154,9 +154,9 @@ gui:
     button-region:
       material: GOLD_BLOCK
       own-material: DIAMOND_BLOCK
-      name: "§b点击传送到§ac§l%owner%§b的领地§c§l%name%"
+      name: "§b点击传送到§c§l%owner%§b的领地§c§l%name%"
       lore:
-        - "§b 距离: §a§l%distance% 花费: §a§l%cost%"
+        - "§b 距离: §a§l%distance% §b花费: §a§l%cost%"
 teleport:
   request:
     - "§a§l %player% §b§l 想要传送到你的领地 §c§l %region%§f§l"

@@ -147,7 +147,7 @@ gui:
       - "§eEnter the name of you want to search to the rename bar."
       - "§eThen Click to Search For Regions by Name."
   result:
-    title: "§aThe Result of search:§b§l %page% §aof §b§l%total_page%"
+    title: "§0The Result of search: §b§l%page% §0of §c§l%total_page%"
     button-next:
       material: NETHER_STAR
       name: "§bThe next page"
@@ -156,9 +156,9 @@ gui:
     button-region:
       material: GOLD_BLOCK
       own-material: DIAMOND_BLOCK
-      name: "§bClick to teleport to %name% by %owner%"
+      name: "§bClick to teleport to §c%name% §bby §c%owner%"
       lore:
-        - "§b distance:%distance% cost:%cost%"
+        - "§b distance:§a§l%distance%§b cost:§a§l%cost%"
 teleport:
   request:
     - "§a§l %player% §b§l wants to teleport to your §c§l %region%"
