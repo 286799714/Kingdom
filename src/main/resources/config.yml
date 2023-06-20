@@ -29,15 +29,15 @@ private-region:
 #            Teleport              #
 # ################################ #
 teleport:
-  # "per" block's distance between two regions' "cost"
-  per: 500
+  # "per" chunk's distance between two regions' "cost"
+  per: 20
   cost: 1
 
   # The extra cost of trans-world teleporting.
   world: 1
 
   item:
-    material: DYE
+    material: BLUE_DYE
     name: "§a§lRegion Stone"
     lore:
       - "§cThe stone has some special space energy inside."

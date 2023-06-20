@@ -40,15 +40,12 @@ public class TeleportAPI {
                 ,0.5);
     }
 
-    public int calculateCost(PrivateRegion start, PrivateRegion to, Player p){
-        if(start.getOwner().getUniqueId().equals(p.getUniqueId())){
-            return 0;
-        }
-        int result=0;
+    public int calculateCost(PrivateRegion start, PrivateRegion to){
+        int result=calculateDistance(start,to);
+        result=(result-(result%per))/per*cost;
         if(start.getMainChunk().getWorld()!=to.getMainChunk().getWorld()){
             result+=world;
         }
-        result+=(calculateDistance(start,to)%per+1)*cost;
         return result;
     }
 

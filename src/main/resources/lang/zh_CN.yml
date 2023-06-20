@@ -123,7 +123,7 @@ cmd-inf:
       account-hover: |-
         String
         The name of the region.
-    success: "§a以得请求已经发送给%player%"
+    success: "§a§l你的请求已经发送给%player%"
     fail-name: "§c领地不存在!"
     fail-region: "§c你不处于任何领地，无法传送"
     fail-offline: "§c这个领地的主人已经离线"
@@ -131,6 +131,8 @@ cmd-inf:
     description: "接受上一个传送请求"
   teleport-no:
     description: "拒绝上一个传送请求"
+  teleport-item:
+    description: "给你一组传送消耗品"
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
@@ -148,20 +150,22 @@ gui:
       material: NETHER_STAR
       name: "§b下一页"
       lore:
-        - "§b现在你在第%page%/%page_total%页"
+        - "§b现在你在第%page%/%total_page%页"
     button-region:
       material: GOLD_BLOCK
-      name: "§b点击传送到%owner%的领地%name%"
+      own-material: DIAMOND_BLOCK
+      name: "§b点击传送到§ac§l%owner%§b的领地§c§l%name%"
       lore:
-        - "§b 距离: %distance% 花费: %cost%"
+        - "§b 距离: §a§l%distance% 花费: §a§l%cost%"
 teleport:
   request:
-    - "§a§l %player% §b§l 想要传送到你的领地 §c§l %region%"
-  #使用 "/" 来分割消息.
-  request-confirm: "§a§l---/§b§l[同意]/§a§l---/§c§l[拒绝]/§a§l---"
+    - "§a§l %player% §b§l 想要传送到你的领地 §c§l %region%§f§l"
+  request-agree: "§a§l-------§b§l[同意]§a§l-------"
+  request-refuse: "§a§l-------§c§l[拒绝]§a§l-------"
+  request-hover: "§e点击执行操作"
   agree1: "§a§l你同意了%player%'的请求"
   agree2: "§a§l你的传送请求被同意了，你将被传送到指定领地"
   refuse1: "§a§l你拒绝了%player%'的请求"
   refuse2: "§c§l你的传送请求被拒绝了"
-  null: "你没有收到任何请求"
-  fail: "你没有足够的物品去传送"
+  null: "§c§l你没有收到任何请求"
+  fail: "§c§l你没有足够的物品去传送"

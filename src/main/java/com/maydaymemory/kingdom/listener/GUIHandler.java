@@ -24,11 +24,14 @@ public class GUIHandler implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
-        InventoryHolder holder = event.getInventory().getHolder();
+        if(event.getClickedInventory()==null){
+            return;
+        }
+        InventoryHolder holder = event.getClickedInventory().getHolder();
         if (!(holder instanceof GUIHolder)) return;
         GUIHolder guiHolder = (GUIHolder) holder;
-        guiHolder.onClick(event.getSlot());
         event.setCancelled(true);
+        guiHolder.onClick(event.getSlot());
     }
 
     @EventHandler

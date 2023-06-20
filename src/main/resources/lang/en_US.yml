@@ -133,6 +133,8 @@ cmd-inf:
     description: "Accept your last teleporting request"
   teleport-no:
     description: "Refuse your last teleporting request"
+  teleport-item:
+    description: "Give you a set of teleporting consumables"
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
@@ -150,20 +152,22 @@ gui:
       material: NETHER_STAR
       name: "§bThe next page"
       lore:
-        - "§bNow you're at %page% of %page_total%"
+        - "§bNow you're at %page% of %total_page%"
     button-region:
       material: GOLD_BLOCK
+      own-material: DIAMOND_BLOCK
       name: "§bClick to teleport to %name% by %owner%"
       lore:
         - "§b distance:%distance% cost:%cost%"
 teleport:
   request:
     - "§a§l %player% §b§l wants to teleport to your §c§l %region%"
-  #use "/" to split the message.
-  request-confirm: "§a§l---/§b§l[Accept]/§a§l---/§c§l[Refuse]/§a§l---"
+  request-agree: "§a§l-------§b§l[Accept]§a§l-------"
+  request-refuse: "§a§l-------§c§l[Refuse]§a§l-------"
+  request-hover: "§eClick to operate."
   agree1: "§a§lYou have agreed the request."
   agree2: "§a§lYour teleport request has been agreed and you'll be teleported."
   refuse1: "§a§lYou have refused the request."
   refuse2: "§c§lYour request has been refused!"
-  null: "You don't have any request."
-  fail: "You don't have enough items to teleport."
+  null: "§c§lYou don't have any request."
+  fail: "§c§lYou don't have enough items to teleport."

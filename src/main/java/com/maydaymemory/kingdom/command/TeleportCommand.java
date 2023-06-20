@@ -68,20 +68,33 @@ public class TeleportCommand extends BaseCommand{
                 return;
             }
             PrivateRegion start=PrivateRegionAPI.getInstance().fromChunk(((Player)sender).getLocation().getChunk());
-            if(start==null){
+            if(start==null) {
                 sender.sendMessage(processMessage("cmd-inf.teleport-to.fail-region"));
                 return;
             }
+            Player p1=(Player) sender;
+            int cost= TeleportAPI.getInstance().calculateCost(start,to);
+            ItemStack item=TeleportAPI.getInstance().getTeleportItem().clone();
+            if(!p1.getInventory().containsAtLeast(item,cost)){
+                p1.sendMessage(processMessage("teleport.fail"));
+                return;
+            }
             Player p=Bukkit.getPlayer(to.getOwner().getUniqueId());
+            if(p.getUniqueId().equals(((Player) sender).getUniqueId())){
+                if(!consume(p,cost)){
+                    return;
+                }
+                ChunkInfo info=ChunkInfoManager.getInstance().getOrCreate(to.getMainChunk());
+                p.teleport(new Location(to.getMainChunk().getWorld(),info.getCoreX(),info.getCoreY(),info.getCoreZ()));
+                return;
+            }
             map.put(p.getUniqueId(),((Player) sender).getUniqueId());
             startMap.put(((Player) sender).getUniqueId(),start);
             toMap.put(((Player) sender).getUniqueId(),to);
-            p.sendMessage(processMessage("teleport.request"));
-            String[] strings=processMessage("teleport.request-confirm").split("/");
-            BaseComponent yes=new ComponentBuilder(strings[1]).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"rt yes")).getCurrentComponent();
-            BaseComponent no=new ComponentBuilder(strings[3]).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"rt no")).getCurrentComponent();
-            p.spigot().sendMessage(new ComponentBuilder(strings[0]).append(yes)
-            .append(strings[2]).append(no).append(strings[4]).getCurrentComponent());
+            p1.sendMessage(processMessage("cmd-inf.teleport-to.success").replaceAll("%player%",p.getName()));
+            p.sendMessage(processMessage("teleport.request").replaceAll("%player%",sender.getName()).replaceAll("%region%",to.getName()));
+            p.spigot().sendMessage(new ComponentBuilder(processMessage("teleport.request-agree")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt yes")).getCurrentComponent());
+            p.spigot().sendMessage(new ComponentBuilder(processMessage("teleport.request-refuse")).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt no")).getCurrentComponent());
         }
     };
 
@@ -107,28 +120,44 @@ public class TeleportCommand extends BaseCommand{
             }
             PrivateRegion start=startMap.get(p1.getUniqueId());
             PrivateRegion to=toMap.get(p1.getUniqueId());
-            int cost= TeleportAPI.getInstance().calculateCost(start,to,p1);
-            removeUUID(p1.getUniqueId());
-            p.sendMessage(processMessage("teleport.agree1"));
+            int cost= TeleportAPI.getInstance().calculateCost(start,to);
             ItemStack item=TeleportAPI.getInstance().getTeleportItem().clone();
             if(!p1.getInventory().containsAtLeast(item,cost)){
                 p1.sendMessage(processMessage("teleport.fail"));
                 return;
             }
-            AtomicInteger count= new AtomicInteger();
-            p1.getInventory().forEach(i->{
-                if(i.equals(item)){
-                    count.addAndGet(i.getAmount());
-                }
-            });
-            p1.getInventory().remove(TeleportAPI.getInstance().getTeleportItem());
-            item.setAmount(count.get()-cost);
-            p1.getInventory().addItem(item);
-            p1.sendMessage("teleport.agree2");
+            removeUUID(p1.getUniqueId());
+            p.sendMessage(processMessage("teleport.agree1"));
+            if(!consume(p1,cost)){
+                return;
+            }
+            p1.sendMessage(processMessage("teleport.agree2"));
             ChunkInfo info=ChunkInfoManager.getInstance().getOrCreate(to.getMainChunk());
             p1.teleport(new Location(to.getMainChunk().getWorld(),info.getCoreX(),info.getCoreY(),info.getCoreZ()));
         }
     };
+
+    private int getItem(Player p){
+        AtomicInteger count= new AtomicInteger();
+        p.getInventory().forEach(i->{
+            if(item.equals(i)){
+                count.addAndGet(i.getAmount());
+            }
+        });
+        return count.get();
+    }
+
+    private boolean consume(Player p,int cost){
+        ItemStack item=TeleportAPI.getInstance().getTeleportItem().clone();
+        if(!p.getInventory().containsAtLeast(item,cost)){
+            p.sendMessage(processMessage("teleport.fail"));
+            return false;
+        }
+        p.getInventory().remove(TeleportAPI.getInstance().getTeleportItem());
+        item.setAmount(getItem(p)-cost);
+        p.getInventory().addItem(item);
+        return true;
+    }
 
     @CommandHandler(
             playerOnly = true,
@@ -154,4 +183,21 @@ public class TeleportCommand extends BaseCommand{
             p1.sendMessage("teleport.refuse2");
         }
     };
+
+    @CommandHandler(
+            playerOnly = true,
+            name = "item",
+            permission = "kingdom.teleport.item",
+            description = "cmd-inf.teleport-item.description"
+    )
+    public SubCommand item=new SubCommand() {
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player p=(Player) sender;
+            ItemStack item=TeleportAPI.getInstance().getTeleportItem().clone();
+            item.setAmount(64);
+            p.getInventory().addItem(item);
+        }
+    };
+
 }

@@ -10,6 +10,7 @@ permissions:
       kingdom.economy.create: true
       kingdom.economy.withdraw: true
       kingdom.economy.deposit: true
+      kingdom.teleport.item: true
   kingdom.player:
     default: true
     children:
