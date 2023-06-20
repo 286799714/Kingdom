@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          # echo Hello, World!
+          # echo Building
           # nvm clean install package
 workflows:
   my-custom-workflow:
