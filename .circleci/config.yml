@@ -1,16 +1,27 @@
-machine:
-  java:
-    version: openjdk17
-  notify:
-    branches:
-      only:
-        - master
-dependencies:
-  override:
-    - git config --global user.email "circle@circleci.com"
-    - git config --global user.name "CircleCI"
-    - chmod +x scripts/build.sh
-    - ./scripts/build.sh
-test:
-  post:
-    - yes|mv -f ./target/kingdom-*.jar $CIRCLE_ARTIFACTS/Plugin-$CIRCLE_BUILD_NUM.jar
+version: 2.1
+orbs:
+  mvn-orb: sivaprasadreddy/mvn-orb@0.0.11
+executors:
+  my-custom-executor:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          # ensure you have first added these secrets
+          # visit app.circleci.com/settings/project/github/286799714/Kingdom/environment-variables
+          username: $DOCKER_HUB_USER
+          password: $DOCKER_HUB_PASSWORD
+jobs:
+  kingdom:
+    executor: my-custom-executor
+    steps:
+      - checkout
+      - run: |
+          # echo Hello, World!
+          # nvm clean install package
+workflows:
+  my-custom-workflow:
+    jobs:
+      - kingdom
+      - mvn-orb/test:
+          dependency_plugin_version: '3.3.0' 
+          verify_dependencies: true 
