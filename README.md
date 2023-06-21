@@ -1,3 +1,6 @@
+[![Build Status](https://mc.youyumc.cn:145/job/Kingdom/badge/icon)](https://mc.youyumc.cn:145/job/Kingdom/)
+
+
 Command  
 ===
 ## Private Region   
