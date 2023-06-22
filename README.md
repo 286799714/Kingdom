@@ -1,4 +1,4 @@
-[![Build Status](https://mc.youyumc.cn:145/job/Kingdom/badge/icon)](https://mc.youyumc.cn:145/job/Kingdom/)
+[![Build Status](https://ci.maydaymemory.com/job/Kingdom/badge/icon)](https://ci.maydaymemory.com/job/Kingdom/)
 
 
 Command  
