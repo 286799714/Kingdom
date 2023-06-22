@@ -1,3 +1,6 @@
+[![Build Status](https://ci.maydaymemory.com/job/Kingdom/badge/icon)](https://ci.maydaymemory.com/job/Kingdom/)
+
+
 Command  
 ===
 ## Private Region   
