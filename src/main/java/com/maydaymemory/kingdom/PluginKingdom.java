@@ -56,6 +56,7 @@ public class PluginKingdom extends JavaPlugin {
 
     public void loadPlugin(){
         ConfigUtil.saveDefault(this, "config.yml");
+        ConfigUtil.saveDefault(this, "economy.yml");
         ConfigUtil.load(this, "anvilgui");
         LanguageUtil.saveDefault(this);
         String language = config.getString("language");
