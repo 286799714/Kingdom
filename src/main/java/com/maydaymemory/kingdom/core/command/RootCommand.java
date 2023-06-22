@@ -154,7 +154,7 @@ public abstract class RootCommand extends Command {
             ptc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(hover)));
             components.add(ptc);
         }
-        if(anno.description().length() != 0) components.add(new TextComponent(" — " + processMessage(anno.description()) ));
+        if(anno.description().length() != 0) components.add(new TextComponent(" -- " + processMessage(anno.description()) ));
         return components.toArray(new TextComponent[0]);
     }
 
