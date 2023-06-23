@@ -7,14 +7,14 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
-public class PrivateRegionCoreMigrateEvent extends PrivateRegionCoreEvent implements Cancellable {
+public class PrivateRegionCoreMoveEvent extends PrivateRegionCoreEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 
     private boolean cancel = false;
 
     private Block target;
 
-    public PrivateRegionCoreMigrateEvent(PrivateRegion region, Block target) {
+    public PrivateRegionCoreMoveEvent(PrivateRegion region, Block target) {
         super(region);
         this.target = target;
     }

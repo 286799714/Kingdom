@@ -2,7 +2,7 @@ package com.maydaymemory.kingdom.api;
 
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionClaimEvent;
-import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreMigrateEvent;
+import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreMoveEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCreateEvent;
 import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.*;
@@ -74,7 +74,7 @@ public class PrivateRegionAPI {
     }
 
     public void moveCoreBlockTo(PrivateRegion region, Block target){
-        PrivateRegionCoreMigrateEvent event = new PrivateRegionCoreMigrateEvent(region, target);
+        PrivateRegionCoreMoveEvent event = new PrivateRegionCoreMoveEvent(region, target);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return;
         target = event.getTarget();
