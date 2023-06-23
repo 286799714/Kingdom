@@ -146,7 +146,6 @@ public class TeleportAPI {
     public PrivateRegion getDestination(Player player){
         Optional<Pair<UUID, String>> optional = teleportQuests.stream()
                 .filter(pair -> pair.getFormer().equals(player.getUniqueId()))
-                .filter(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()) != null)
                 .findFirst();
         return optional
                 .map(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()))
@@ -159,7 +158,6 @@ public class TeleportAPI {
     public PrivateRegion getRequestDestination(Player player){
         Optional<Pair<UUID, String>> optional = requests.stream()
                 .filter(pair -> pair.getFormer().equals(player.getUniqueId()))
-                .filter(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()) != null)
                 .findFirst();
         return optional
                 .map(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()))
