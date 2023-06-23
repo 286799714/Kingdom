@@ -129,6 +129,7 @@ cmd-inf:
     fail-name: "§cThe region doesn't exist!"
     fail-region: "§cYou aren't in any region,in which case,the teleporting is banned."
     fail-offline: "§cThe owner of the region is offline!"
+    fail-teleporting: "§cYou can't send a new request while teleporting"
   teleport-yes:
     description: "Accept your last teleporting request"
   teleport-no:

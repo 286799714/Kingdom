@@ -36,6 +36,13 @@ teleport:
   # The extra cost of trans-world teleporting.
   world: 1
 
+  # ticks
+  delay: 100
+
+  request:
+    # ticks
+    timeout: 600
+
   item:
     material: BLUE_DYE
     name: "§a§lRegion Stone"

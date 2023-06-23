@@ -9,7 +9,7 @@ import org.bukkit.configuration.Configuration;
 
 import javax.annotation.Nonnull;
 
-public class BaseCommand extends RootCommand {
+public abstract class BaseCommand extends RootCommand {
     @LanguageInject
     private static Configuration lang;
 
