@@ -5,6 +5,7 @@ import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
 import com.maydaymemory.kingdom.core.util.Pair;
 import com.maydaymemory.kingdom.event.teleport.TeleportPrivateRegionAcceptedEvent;
+import com.maydaymemory.kingdom.event.teleport.TeleportPrivateRegionEvent;
 import com.maydaymemory.kingdom.event.teleport.TeleportPrivateRegionRejectedEvent;
 import com.maydaymemory.kingdom.event.teleport.TeleportPrivateRegionRequestEvent;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
@@ -202,7 +203,10 @@ public class TeleportAPI {
         if(!chunkInfo.isMainChunk()) return;
         World world1 = Bukkit.getWorld(chunkInfo.getWorld());
         if(world1 == null) return;
-        player.teleport(new Location(world1, chunkInfo.getCoreX(), chunkInfo.getCoreY()+1, chunkInfo.getCoreZ()));
+        TeleportPrivateRegionEvent event = new TeleportPrivateRegionEvent(player, target);
+        Bukkit.getPluginManager().callEvent(event);
+        if(!event.isCancelled())
+            player.teleport(new Location(world1, chunkInfo.getCoreX(), chunkInfo.getCoreY()+1, chunkInfo.getCoreZ()));
     }
 
     private TeleportAPI() {
