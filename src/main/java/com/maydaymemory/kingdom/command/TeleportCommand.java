@@ -75,7 +75,7 @@ public class TeleportCommand extends BaseCommand{
                 return;
             }
             if (TeleportAPI.getInstance().startTeleport(p1, to)) {
-                if(p.getUniqueId().equals(p1.getUniqueId())) sender.sendMessage(processMessage("cmd-inf.teleport-to.success2").replaceAll("%delay%", String.valueOf(config.getInt("teleport.delay", 100)/20)));
+                if(p.getUniqueId().equals(p1.getUniqueId())) sender.sendMessage(processMessage("cmd-inf.teleport-to.success2").replaceAll("%delay%", String.valueOf((int)(config.getInt("teleport.delay", 100)/2d)/10d)));
                 else sender.sendMessage(processMessage("cmd-inf.teleport-to.success").replaceAll("%player%", p.getName()));
             }
         }
@@ -97,7 +97,10 @@ public class TeleportCommand extends BaseCommand{
             Player player = (Player) sender;
             if(TeleportAPI.getInstance().acceptRegionTeleportRequest(requester, player)) {
                 player.sendMessage(processMessage("teleport.agree1"));
-                requester.sendMessage(processMessage("teleport.agree2"));
+                requester.sendMessage(processMessage("teleport.agree2")
+                        .replaceAll("%delay%", String.valueOf((int)(config.getInt("teleport.delay", 100)/2d)/10d))
+                        .replaceAll("%region%", TeleportAPI.getInstance().getDestination(player).getName())
+                );
             }
         }
     };

@@ -177,6 +177,7 @@ public class TeleportAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         teleportAfterDelay(requester, destination);
+        requests.remove(new Pair<>(requester.getUniqueId(), destination.getId()));
         return true;
     }
 

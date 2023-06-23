@@ -126,6 +126,7 @@ cmd-inf:
         String
         The name of the region.
     success: "§aYour request has been sent to %player%"
+    success2: "§aTeleport will start in %delay% seconds."
     fail-name: "§cThe region doesn't exist!"
     fail-region: "§cYou aren't in any region,in which case,the teleporting is banned."
     fail-offline: "§cThe owner of the region is offline!"
@@ -162,7 +163,7 @@ gui:
         - "§b distance:§a§l%distance%§b cost:§a§l%cost%"
 teleport:
   request:
-    - "§a§l %player% §b§l wants to teleport to your §c§l %region%"
+    - "§a§l %player% §b§lwants to teleport to your §c§l%region%"
   request-agree: "§a§l-------§b§l[Accept]§a§l-------"
   request-refuse: "§a§l-------§c§l[Refuse]§a§l-------"
   request-hover: "§eClick to operate."
