@@ -30,11 +30,11 @@ private-region:
 # ################################ #
 teleport:
   # "per" chunk's distance between two regions' "cost"
-  per: 20
+  per: 4
   cost: 1
 
   # The extra cost of trans-world teleporting.
-  world: 1
+  world: 5
 
   # ticks
   delay: 100

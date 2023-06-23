@@ -41,8 +41,8 @@ public class TeleportAPI {
     protected int per;
     protected int cost;
     protected int world;
-    private final Set<Pair<UUID, String>> teleportQuests = new HashSet<>();
-    private final Set<Pair<UUID, String>> requests = new HashSet<>();
+    private final Map<UUID, String> teleportQuests = new HashMap<>();
+    private final Map<UUID, String> requests = new HashMap<>();
     private final Map<Pair<UUID, String>, Integer> costs = new HashMap<>();
 
     private int getItem(Player p){
@@ -65,14 +65,14 @@ public class TeleportAPI {
     private void startQuest(Player player, PrivateRegion target, int cost){
         Pair<UUID, String> pair = new Pair<>(player.getUniqueId(), target.getId());
         consume(player, cost);
-        teleportQuests.add(pair);
+        teleportQuests.put(player.getUniqueId(), target.getId());
         costs.put(pair, cost);
         new BukkitRunnable(){
             @Override
             public void run() {
-                if(teleportQuests.contains(pair)) {
+                if(teleportQuests.containsKey(player.getUniqueId())) {
                     teleport(player, target);
-                    teleportQuests.remove(pair);
+                    teleportQuests.remove(player.getUniqueId());
                 }
             }
         }.runTaskLater(PluginKingdom.getInstance(), config.getInt("teleport.delay", 100));
@@ -83,7 +83,7 @@ public class TeleportAPI {
         ItemStack item = TeleportAPI.getInstance().getTeleportItem().clone();
         item.setAmount(costs.getOrDefault(pair, 0));
         player.getInventory().addItem(item);
-        teleportQuests.remove(pair);
+        teleportQuests.remove(pair.getFormer());
         costs.remove(pair);
     }
 
@@ -123,7 +123,7 @@ public class TeleportAPI {
         if(owner.getUniqueId().equals(player.getUniqueId())){
             startQuest(player, target, cost);
         }else {
-            requests.add(new Pair<>(player.getUniqueId(), target.getId()));
+            requests.put(player.getUniqueId(), target.getId());
             owner.sendMessage(lang.getString("teleport.request","teleport.request")
                     .replaceAll("%player%", player.getName()).replaceAll("%region%", target.getName()));
             owner.spigot().sendMessage(new ComponentBuilder(lang.getString("teleport.request-agree", "agree"))
@@ -133,7 +133,7 @@ public class TeleportAPI {
             new BukkitRunnable(){
                 @Override
                 public void run() {
-                    requests.remove(new Pair<>(player.getUniqueId(), target.getId()));
+                    requests.remove(player.getUniqueId());
                 }
             }.runTaskLater(PluginKingdom.getInstance(), config.getInt("teleport.request.timeout", 600));
         }
@@ -144,24 +144,14 @@ public class TeleportAPI {
      * @return Returns non-null only when the teleport delay countdown is in progress
      * */
     public PrivateRegion getDestination(Player player){
-        Optional<Pair<UUID, String>> optional = teleportQuests.stream()
-                .filter(pair -> pair.getFormer().equals(player.getUniqueId()))
-                .findFirst();
-        return optional
-                .map(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()))
-                .orElse(null);
+        return teleportQuests.get(player.getUniqueId()) == null ? null : PrivateRegionAPI.getInstance().fromId(teleportQuests.get(player.getUniqueId()));
     }
 
     /**
      * @return Returns to its destination when the player has a teleportation request in progress
      * */
     public PrivateRegion getRequestDestination(Player player){
-        Optional<Pair<UUID, String>> optional = requests.stream()
-                .filter(pair -> pair.getFormer().equals(player.getUniqueId()))
-                .findFirst();
-        return optional
-                .map(pair -> PrivateRegionAPI.getInstance().fromId(pair.getLatter()))
-                .orElse(null);
+        return requests.get(player.getUniqueId()) == null ? null : PrivateRegionAPI.getInstance().fromId(requests.get(player.getUniqueId()));
     }
 
     /**
@@ -175,7 +165,7 @@ public class TeleportAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         teleportAfterDelay(requester, destination);
-        requests.remove(new Pair<>(requester.getUniqueId(), destination.getId()));
+        requests.remove(requester.getUniqueId());
         return true;
     }
 
@@ -189,7 +179,7 @@ public class TeleportAPI {
         TeleportPrivateRegionRejectedEvent event = new TeleportPrivateRegionRejectedEvent(requester, destination);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
-        requests.remove(new Pair<>(requester.getUniqueId(), destination.getId()));
+        requests.remove(requester.getUniqueId());
         return true;
     }
 

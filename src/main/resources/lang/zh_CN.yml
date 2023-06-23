@@ -161,12 +161,12 @@ gui:
         - "§b 距离: §a§l%distance% §b花费: §a§l%cost%"
 teleport:
   request:
-    - "§a§l %player% §b§l 想要传送到你的领地§c§l%region%§f§l"
+    - "§a§l%player%§b§l想要传送到你的领地§c§l%region%§f§l"
   request-agree: "§a§l-------§b§l[同意]§a§l-------"
   request-refuse: "§a§l-------§c§l[拒绝]§a§l-------"
   request-hover: "§e点击执行操作"
-  agree1: "§a§l你同意了的请求"
+  agree1: "§a§l你同意了请求"
   agree2: "§a§l请求被接受，你将会在§c%delay%§a§l后传送到§c%region%"
-  refuse1: "§a§l你拒绝了的请求"
+  refuse1: "§a§l你拒绝了请求"
   refuse2: "§c§l你的传送请求被拒绝了"
   fail: "§c§l你没有足够的物品去传送"
