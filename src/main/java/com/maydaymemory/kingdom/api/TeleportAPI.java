@@ -67,6 +67,15 @@ public class TeleportAPI {
         consume(player, cost);
         teleportQuests.add(pair);
         costs.put(pair, cost);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if(teleportQuests.contains(pair)) {
+                    teleport(player, target);
+                    teleportQuests.remove(pair);
+                }
+            }
+        }.runTaskLater(PluginKingdom.getInstance(), config.getInt("teleport.delay", 100));
     }
 
     private void stopQuest(Player player, PrivateRegion target){
@@ -195,15 +204,6 @@ public class TeleportAPI {
         ItemStack item = TeleportAPI.getInstance().getTeleportItem().clone();
         if(!player.getInventory().containsAtLeast(item, cost)) return;
         startQuest(player, target, cost);
-        new BukkitRunnable(){
-            @Override
-            public void run() {
-                if(teleportQuests.contains(new Pair<>(player.getUniqueId(), target.getId()))) {
-                    teleport(player, target);
-                    teleportQuests.remove(new Pair<>(player.getUniqueId(), target.getId()));
-                }
-            }
-        }.runTaskLater(PluginKingdom.getInstance(), config.getInt("teleport.delay", 100));
     }
 
     public void teleport(Player player, PrivateRegion target){
