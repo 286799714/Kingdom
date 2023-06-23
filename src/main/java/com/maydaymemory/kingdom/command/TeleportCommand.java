@@ -5,6 +5,7 @@ import com.maydaymemory.kingdom.api.TeleportAPI;
 import com.maydaymemory.kingdom.core.command.CommandHandler;
 import com.maydaymemory.kingdom.core.command.ParameterSign;
 import com.maydaymemory.kingdom.core.command.SubCommand;
+import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfoManager;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
@@ -15,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +32,8 @@ public class TeleportCommand extends BaseCommand{
         this.setAliases(Collections.singletonList("rt"));
     }
 
+    @ConfigInject
+    private static Configuration config;
 
     @CommandHandler(
             playerOnly = true,
@@ -70,8 +74,10 @@ public class TeleportCommand extends BaseCommand{
                 p1.sendMessage(processMessage("teleport.fail"));
                 return;
             }
-            if (TeleportAPI.getInstance().startTeleport(p1, to))
-                p1.sendMessage(processMessage("cmd-inf.teleport-to.success").replaceAll("%player%",p.getName()));
+            if (TeleportAPI.getInstance().startTeleport(p1, to)) {
+                if(p.getUniqueId().equals(p1.getUniqueId())) sender.sendMessage(processMessage("cmd-inf.teleport-to.success2").replaceAll("%delay%", String.valueOf(config.getInt("teleport.delay", 100)/20)));
+                else sender.sendMessage(processMessage("cmd-inf.teleport-to.success").replaceAll("%player%", p.getName()));
+            }
         }
     };
 

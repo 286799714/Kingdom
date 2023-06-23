@@ -124,6 +124,7 @@ cmd-inf:
         String
         The name of the region.
     success: "§a§l你的请求已经发送给%player%"
+    success2: "§a§l传送将会在§c%delay%§a§l后开始"
     fail-name: "§c领地不存在!"
     fail-region: "§c你不处于任何领地，无法传送"
     fail-offline: "§c这个领地的主人已经离线"
