@@ -57,10 +57,20 @@ public class TeleportAPI {
     }
 
     private void consume(Player p,int cost){
-        ItemStack item = TeleportAPI.getInstance().getTeleportItem().clone();
-        p.getInventory().remove(TeleportAPI.getInstance().getTeleportItem());
-        item.setAmount(Math.max(getItem(p)-cost, 0));
-        p.getInventory().addItem(item);
+        ItemStack item = getTeleportItem().clone();
+        HashMap<Integer,? extends ItemStack> map=p.getInventory().all(item.getType());
+        for (Map.Entry<Integer,? extends ItemStack> entry:map.entrySet()){
+            ItemStack invItem=entry.getValue();
+            if(!item.isSimilar(invItem)) return;
+            if(invItem.getAmount()>=cost){
+                invItem.setAmount(invItem.getAmount()-cost);
+                p.getInventory().setItem(entry.getKey(),invItem);
+                return;
+            }
+            cost-=invItem.getAmount();
+            invItem.setAmount(0);
+            p.getInventory().setItem(entry.getKey(),invItem);
+        }
     }
 
     private void startQuest(Player player, PrivateRegion target, int cost){
@@ -89,12 +99,11 @@ public class TeleportAPI {
     }
 
     public int calculateCost(PrivateRegion start, PrivateRegion to) {
-        int result = calculateDistance(start, to);
-        result = (result - (result % per)) / per * cost;
         if (start.getMainChunk().getWorld() != to.getMainChunk().getWorld()) {
-            result += world;
+            return world;
         }
-        return result;
+        int result = calculateDistance(start, to);
+        return (int)Math.ceil((double)result/per)*cost;
     }
 
     /**
