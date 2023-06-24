@@ -1,4 +1,4 @@
-package com.maydaymemory.kingdom.dao.bean;
+package com.maydaymemory.kingdom.dao.bean.region;
 
 import java.util.HashSet;
 import java.util.Set;

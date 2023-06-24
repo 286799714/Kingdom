@@ -1,6 +1,7 @@
-package com.maydaymemory.kingdom.dao.bean;
+package com.maydaymemory.kingdom.dao.bean.region;
 
 import com.maydaymemory.kingdom.core.util.Pair;
+import com.maydaymemory.kingdom.dao.bean.region.AdministrativeRegionBean;
 
 import java.util.HashSet;
 import java.util.Set;
