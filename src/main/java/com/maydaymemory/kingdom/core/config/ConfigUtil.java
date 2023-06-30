@@ -15,10 +15,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
 import java.net.URL;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarEntry;
 
 public class ConfigUtil {
@@ -68,11 +65,8 @@ public class ConfigUtil {
         }
         return configuration;
     }
-    public static void load(Plugin plugin) {
-        load(plugin, null);
-    }
 
-    public static void load(Plugin plugin, String bypass) {
+    public static void load(Plugin plugin, String... bypass) {
         //Inject into the static field in all class annotated by ConfigInject in the plugin.
         URL url = plugin.getClass().getResource("");
         if(url == null) return;
@@ -89,7 +83,7 @@ public class ConfigUtil {
                             .replaceAll("\\\\","/")
                             .replaceAll("/", ".")
                             .replaceAll(".class", "");
-                    if(bypass != null && entry.getName().contains(bypass)) continue;
+                    if(Arrays.stream(bypass).noneMatch(cp::contains)) continue;
                     Class<?> clazz = classLoader.loadClass(cp);
                     if(clazz == null) continue;
                     for(Field field : clazz.getDeclaredFields()){

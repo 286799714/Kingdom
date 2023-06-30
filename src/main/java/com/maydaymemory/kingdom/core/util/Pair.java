@@ -1,11 +1,12 @@
 package com.maydaymemory.kingdom.core.util;
 
 import javax.annotation.Nonnull;
+import java.io.Serializable;
 
 /**
  * Represents an ordered pair.
  * */
-public class Pair<U,V> implements Comparable<Pair<U,V>>{
+public class Pair<U,V> implements Comparable<Pair<U,V>>, Serializable {
     private U former;
     private V latter;
 
@@ -70,4 +71,6 @@ public class Pair<U,V> implements Comparable<Pair<U,V>>{
     public String toString(){
         return "{" + former + "," + latter + "}";
     }
+
+    private static final long serialVersionUID = 1L;
 }

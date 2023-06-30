@@ -36,8 +36,7 @@ public class PrivateRegionAPI {
     public PrivateRegion createPrivateRegion(OfflinePlayer owner, String name){
         int upper = config.getInt("private-region.amount-limit", 1);
         if(PlayerInfoManager.getInstance().getOrCreate(owner.getUniqueId()).getPrivateRegions().size() >= upper) return null;
-        RegionTypeToken<PrivateRegion> token = new RegionTypeToken<PrivateRegion>(){};
-        PrivateRegion region = RegionManagerProvider.getInstance().getRegionManager().createRegion(token, owner, name);
+        PrivateRegion region = RegionManagerProvider.getInstance().getRegionManager().createRegion(PrivateRegion.class, owner, name);
         PrivateRegionCreateEvent event = new PrivateRegionCreateEvent(region);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()){
@@ -66,7 +65,8 @@ public class PrivateRegionAPI {
         chunkInfo.setResidentChunk(region);
         if(region.getMainChunk() == null){
             Block block = chunk.getBlock(7,0,7);
-            Block target = chunk.getWorld().getHighestBlockAt(block.getLocation());
+            Block hb = chunk.getWorld().getHighestBlockAt(block.getLocation());
+            Block target = chunk.getWorld().getBlockAt(hb.getLocation().add(0, 1 ,0));
             moveCoreBlockTo(region, target);
         }
         else region.addResidentialChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
@@ -102,7 +102,7 @@ public class PrivateRegionAPI {
     }
 
     public PrivateRegion fromId(String id){
-        AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
+        Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
         if(region instanceof PrivateRegion) return (PrivateRegion) region;
         else return null;
     }

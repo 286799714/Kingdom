@@ -1,27 +1,43 @@
 package com.maydaymemory.kingdom.model.chunk;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 
 import javax.annotation.Nullable;
 
+@DatabaseTable(tableName = "chunk_info")
 public class ChunkInfo{
+    @DatabaseField(canBeNull = false)
     private String world;
+    @DatabaseField(canBeNull = false)
     private int x;
+    @DatabaseField(canBeNull = false)
     private int z;
+    @DatabaseField(canBeNull = false)
     private boolean isResidentChunk;
+    @DatabaseField
     private String privateRegionId;
+    @DatabaseField(canBeNull = false)
     private boolean isMainChunk;
+
     /**The absolute coordinates of the position of the core block*/
-    private int cx,cy,cz;
+    @DatabaseField
+    private int cx;
+    @DatabaseField
+    private int cy;
+    @DatabaseField
+    private int cz;
+    @DatabaseField(id = true)
+    private String id;
+
+    private ChunkInfo(){}
 
     public ChunkInfo(String world, int x, int z){
         this.world = world;
         this.x = x;
         this.z = z;
+        id = world + ";" + x + ";" + z;
         isResidentChunk = false;
         privateRegionId = null;
         isMainChunk = false;
@@ -34,24 +50,12 @@ public class ChunkInfo{
         return world;
     }
 
-    public void setWorld(String world) {
-        this.world = world;
-    }
-
     public int getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getZ() {
         return z;
-    }
-
-    public void setZ(int z) {
-        this.z = z;
     }
 
     public boolean isResidentChunk() {

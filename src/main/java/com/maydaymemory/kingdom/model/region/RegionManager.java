@@ -5,25 +5,25 @@ import java.util.Map;
 import java.util.UUID;
 
 public class RegionManager {
-    private final Map<String, AdministrativeRegion> regionMap = new HashMap<>();
+    private final Map<String, Region> regionMap = new HashMap<>();
     private final Map<String, RegionFactory> factoryMap = new HashMap<>();
 
     RegionManager(){}
 
-    public void matchFactory(RegionTypeToken<?> token, RegionFactory factory) {
-        factoryMap.put(token.getType().getTypeName(), factory);
+    public void matchFactory(Class<?> clazz, RegionFactory factory) {
+        factoryMap.put(clazz.getTypeName(), factory);
     }
 
-    public <T extends AdministrativeRegion> T createRegion(RegionTypeToken<T> token, Object... args) {
-        RegionFactory factory = factoryMap.get(token.getType().getTypeName());
+    public <T extends Region> T createRegion(Class<T> clazz, Object... args) {
+        RegionFactory factory = factoryMap.get(clazz.getTypeName());
         if (factory == null) return null;
         UUID uuid = UUID.randomUUID();
-        T region = factory.createRegion(token, uuid.toString(), args);
+        T region = factory.createRegion(clazz, uuid.toString(), args);
         regionMap.put(region.getId(), region);
         return region;
     }
 
-    public AdministrativeRegion getRegionById(String id) {
+    public Region getRegionById(String id) {
         return regionMap.get(id);
     }
 
@@ -31,7 +31,8 @@ public class RegionManager {
         regionMap.remove(id);
     }
 
-    public Map<String, AdministrativeRegion> getRegionMap(){
+    public Map<String, Region> getRegionMap(){
         return regionMap;
     }
+
 }

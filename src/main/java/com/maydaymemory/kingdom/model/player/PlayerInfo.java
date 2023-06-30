@@ -1,6 +1,9 @@
 package com.maydaymemory.kingdom.model.player;
 
-import com.maydaymemory.kingdom.model.region.AdministrativeRegion;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
+import com.maydaymemory.kingdom.model.region.Region;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
 import com.maydaymemory.kingdom.model.region.RegionManagerProvider;
 
@@ -9,10 +12,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@DatabaseTable(tableName = "player_info")
 public class PlayerInfo {
-    private final UUID uuid;
+    @DatabaseField(id = true)
+    private UUID uuid;
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private final HashSet<String> privateRegions = new HashSet<>();
 
-    private final Set<String> privateRegions = new HashSet<>();
+    private PlayerInfo(){}
 
     public PlayerInfo(UUID uuid){
         this.uuid = uuid;
@@ -37,7 +44,7 @@ public class PlayerInfo {
     public @Nonnull Set<PrivateRegion> getPrivateRegions(){
         Set<PrivateRegion> regions = new HashSet<>();
         for(String id : privateRegions){
-            AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
+            Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
             if(region instanceof PrivateRegion) regions.add((PrivateRegion) region);
         }
         return regions;

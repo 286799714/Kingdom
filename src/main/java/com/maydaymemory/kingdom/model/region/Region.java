@@ -1,20 +1,30 @@
 package com.maydaymemory.kingdom.model.region;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+
 import java.util.*;
 
-public abstract class AdministrativeRegion {
-    private String root;
-    private final Set<String> children = new HashSet<>();
-    private final String id;
-    protected Set<String> strategies = new HashSet<>();
+public abstract class Region {
+    @DatabaseField
+    protected String root;
 
-    protected AdministrativeRegion(String id){
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    protected HashSet<String> children = new HashSet<>();
+
+    @DatabaseField(id = true)
+    protected final String id;
+
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    protected HashSet<String> strategies = new HashSet<>();
+
+    protected Region(String id){
         this.id = id;
     }
 
-    public void setRoot(AdministrativeRegion root){
+    public void setRoot(Region root){
         if(this.root != null) {
-            AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(this.root);
+            Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(this.root);
             if(region != null) region.children.remove(id);
         }
         if(root == null) {
@@ -25,15 +35,15 @@ public abstract class AdministrativeRegion {
         root.children.add(id);
     }
 
-    public AdministrativeRegion getRoot() {
+    public Region getRoot() {
         return root == null ? null : RegionManagerProvider.getInstance().getRegionManager().getRegionById(root);
     }
 
-    public void addChild(AdministrativeRegion child){
+    public void addChild(Region child){
         child.setRoot(this);
     }
 
-    public void removeChild(AdministrativeRegion child){
+    public void removeChild(Region child){
         String id = child.getId();
         if(children.contains(id)){
             child.setRoot(null);
@@ -45,10 +55,10 @@ public abstract class AdministrativeRegion {
         return children.contains(id);
     }
 
-    public Set<AdministrativeRegion> getChildren(){
-        Set<AdministrativeRegion> set = new HashSet<>();
+    public Set<Region> getChildren(){
+        Set<Region> set = new HashSet<>();
         for(String id : children){
-            AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
+            Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
             if(region != null) set.add(region);
         }
         return set;

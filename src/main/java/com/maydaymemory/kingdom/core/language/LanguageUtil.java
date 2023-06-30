@@ -58,22 +58,15 @@ public class LanguageUtil {
             throw new RuntimeException(e);
         }
     }
-    public static boolean load(Plugin plugin, String language){
-        return load(plugin, language, null);
-    }
 
-    public static boolean load(Plugin plugin, String language, String bypass){
+    public static boolean load(Plugin plugin, String language, String... bypass){
         Locale locale;
         if(language == null) locale = Locale.getDefault();
         else locale = new Locale(language);
         return load(plugin, locale, bypass);
     }
 
-    public static boolean load(Plugin plugin, Locale locale) {
-        return load(plugin, locale, null);
-    }
-
-    public static boolean load(Plugin plugin, Locale locale, String bypass) {
+    public static boolean load(Plugin plugin, Locale locale, String... bypass) {
         String path = "lang/" + locale.toString() + ".yml";
         //load language configuration from file
         File file = new File(plugin.getDataFolder(), path);
@@ -102,7 +95,7 @@ public class LanguageUtil {
                             .replaceAll("\\\\","/")
                             .replaceAll("/", ".")
                             .replaceAll(".class", "");
-                    if(bypass != null && entry.getName().contains(bypass)) continue;
+                    if(Arrays.stream(bypass).noneMatch(cp::contains)) continue;
                     Class<?> clazz = classLoader.loadClass(cp);
                     if(clazz == null) continue;
                     for(Field field : clazz.getDeclaredFields()){

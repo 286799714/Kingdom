@@ -32,7 +32,6 @@ public class SearchRegionGUIHolder extends GUIHolder {
                     return Arrays.asList(
                             AnvilGUI.ResponseAction.close(),
                             AnvilGUI.ResponseAction.run(()->new RegionListGUIHolder(player, stateSnapshot.getText(), region, 1).open()));
-                            //AnvilGUI.ResponseAction.run(()->player.sendMessage(stateSnapshot.getText())));
                 })
                 .itemLeft(button)
                 .text(lang.getString("gui.search.text"))
@@ -52,9 +51,7 @@ public class SearchRegionGUIHolder extends GUIHolder {
 
     @Deprecated
     @Override
-    public void onClick(int slot) {
-
-    }
+    public void onClick(int slot) {}
 
     @LanguageInject
     private static Configuration lang;

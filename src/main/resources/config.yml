@@ -49,3 +49,25 @@ teleport:
     lore:
       - "§cThe stone has some special space energy inside."
       - "§cConsequently,it's used to teleport."
+
+# ################################ #
+#                                  #
+#              Data                #
+# ################################ #
+data:
+  # Can be: MySQL / SQLite
+  type: SQLite
+  # Effective when using MySQL
+  ip: 127.0.0.1
+  port: 3306
+  db-name: kingdom
+  user: root
+  password: 123456
+  # Related settings of the database connection pool, using HikariCP
+  cp:
+    # unit: ms
+    timeout: 30000
+    # Minimum number of idle connections
+    minimum-idle: 10
+    # The maximum size the pool is allowed to reach, including free and in-use connections
+    maximum-pool-size: 50

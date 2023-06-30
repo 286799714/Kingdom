@@ -1,5 +1,8 @@
 package com.maydaymemory.kingdom.model.region;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import com.maydaymemory.kingdom.core.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -9,11 +12,21 @@ import org.bukkit.World;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class PrivateRegion extends AdministrativeRegion{
+@DatabaseTable(tableName = "private_region")
+public class PrivateRegion extends Region {
+    @DatabaseField(canBeNull = false)
     protected UUID owner;
-    protected Set<UUID> resident = new HashSet<>();
-    protected Set<Pair<String, Pair<Integer, Integer>>> residentialChunks = new TreeSet<>();
+
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    protected HashSet<UUID> resident = new HashSet<>();
+
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    protected TreeSet<Pair<String, Pair<Integer, Integer>>> residentialChunks = new TreeSet<>();
+
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     protected Pair<String, Pair<Integer, Integer>> mainChunk = null;
+
+    @DatabaseField
     private String name;
 
     protected PrivateRegion(String id, OfflinePlayer owner, String name){
@@ -21,6 +34,11 @@ public class PrivateRegion extends AdministrativeRegion{
         this.name = id;
         setName(name);
         this.owner = owner.getUniqueId();
+    }
+
+    /**For ROM requirements*/
+    private PrivateRegion(){
+        super(null);
     }
 
     public void setOwner(OfflinePlayer owner){

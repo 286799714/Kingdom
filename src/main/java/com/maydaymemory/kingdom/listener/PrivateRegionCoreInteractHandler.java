@@ -3,7 +3,7 @@ package com.maydaymemory.kingdom.listener;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreBreakingEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreBrokenEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreInteractEvent;
-import com.maydaymemory.kingdom.model.region.AdministrativeRegion;
+import com.maydaymemory.kingdom.model.region.Region;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
 import com.maydaymemory.kingdom.model.region.RegionManagerProvider;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
@@ -34,7 +34,7 @@ public class PrivateRegionCoreInteractHandler implements Listener {
         Chunk chunk = block.getChunk();
         ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
         if(!chunkInfo.isMainChunk()) return;
-        AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(chunkInfo.getPrivateRegionId());
+        Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(chunkInfo.getPrivateRegionId());
         if(region instanceof PrivateRegion) {
             if (chunkInfo.getCoreX() == block.getX() && chunkInfo.getCoreY() == block.getY() && chunkInfo.getCoreZ() == block.getZ()) {
                 PrivateRegionCoreBreakingEvent event1 = new PrivateRegionCoreBreakingEvent((PrivateRegion) region, event.getPlayer());
@@ -71,7 +71,7 @@ public class PrivateRegionCoreInteractHandler implements Listener {
         Chunk chunk = block.getChunk();
         ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
         if(!chunkInfo.isMainChunk()) return;
-        AdministrativeRegion region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(chunkInfo.getPrivateRegionId());
+        Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(chunkInfo.getPrivateRegionId());
         if(region instanceof PrivateRegion) {
             if (chunkInfo.getCoreX() == block.getX() && chunkInfo.getCoreY() == block.getY() && chunkInfo.getCoreZ() == block.getZ()) {
                 PrivateRegionCoreInteractEvent event1 = new PrivateRegionCoreInteractEvent((PrivateRegion) region, event.getPlayer());
