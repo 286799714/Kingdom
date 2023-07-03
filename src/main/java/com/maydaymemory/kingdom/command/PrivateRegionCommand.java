@@ -89,7 +89,7 @@ public class PrivateRegionCommand extends BaseCommand{
                     sender.sendMessage(processMessage("cmd-inf.claim.amount-limit").replaceAll("%limit%", String.valueOf(limit)));
                     return;
                 }
-                if(!PrivateRegionAPI.getInstance().isBorder(region, chunk)){
+                if(!PrivateRegionAPI.getInstance().isBorder(region, chunk) && region.getResidentialChunks().size() != 0){
                     sender.sendMessage(processMessage("cmd-inf.claim.not-border"));
                     return;
                 }

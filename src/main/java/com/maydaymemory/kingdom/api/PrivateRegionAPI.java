@@ -58,7 +58,7 @@ public class PrivateRegionAPI {
         if(chunkInfo.isClaimed()) return false;
         int limit = config.getInt("private-region.claim.limit", 8);
         if(region.getResidentialChunks().size() >= limit) return false;
-        if(!isBorder(region, chunk)) return false;
+        if(!isBorder(region, chunk) && region.getResidentialChunks().size() != 0) return false;
         PrivateRegionClaimEvent event = new PrivateRegionClaimEvent(region, chunk);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
