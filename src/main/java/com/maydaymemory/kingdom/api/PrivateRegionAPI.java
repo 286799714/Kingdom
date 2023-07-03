@@ -4,6 +4,7 @@ import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionClaimEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreMoveEvent;
 import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCreateEvent;
+import com.maydaymemory.kingdom.event.privateregion.PrivateRegionRecantEvent;
 import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.*;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
@@ -70,6 +71,27 @@ public class PrivateRegionAPI {
             moveCoreBlockTo(region, target);
         }
         else region.addResidentialChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        return true;
+    }
+
+    public boolean recant(Chunk chunk){
+        ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
+        if(!chunkInfo.isClaimed()) return false;
+        if(chunkInfo.getPrivateRegionId() == null) return false;
+        PrivateRegion region = PrivateRegionAPI.getInstance().fromId(chunkInfo.getPrivateRegionId());
+        if(region == null) return false;
+        PrivateRegionRecantEvent event = new PrivateRegionRecantEvent(region, chunk);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        if(chunkInfo.isMainChunk()){
+            World world = Bukkit.getWorld(chunkInfo.getWorld());
+            if(world == null) return false;
+            world.setType(chunkInfo.getCoreX(), chunkInfo.getCoreY(), chunkInfo.getCoreZ(), Material.AIR);
+            if(region.getId().equals(chunkInfo.getPrivateRegionId())) region.setMainChunk(null);
+        }
+        chunkInfo.setMainChunk(false);
+        chunkInfo.setResidentChunk(null);
+        region.removeResidentialChunk(chunkInfo.getWorld(), chunkInfo.getX(), chunkInfo.getZ());
         return true;
     }
 

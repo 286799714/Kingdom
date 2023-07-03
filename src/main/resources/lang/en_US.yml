@@ -125,8 +125,8 @@ cmd-inf:
       account-hover: |-
         String
         The name of the region.
-    success: "§aYour request has been sent to %player%"
-    success2: "§aTeleport will start in %delay% seconds."
+    success: "§fYour request has been sent to §c%player%"
+    success2: "§fTeleport will start in §c%delay%§f seconds."
     fail-name: "§cThe region doesn't exist!"
     fail-region: "§cYou aren't in any region,in which case,the teleporting is banned."
     fail-offline: "§cThe owner of the region is offline!"

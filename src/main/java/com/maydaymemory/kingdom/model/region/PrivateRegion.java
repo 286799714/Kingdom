@@ -4,13 +4,13 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.maydaymemory.kingdom.core.util.Pair;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
+import com.maydaymemory.kingdom.model.chunk.ChunkInfoManager;
+import org.bukkit.*;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @DatabaseTable(tableName = "private_region")
 public class PrivateRegion extends Region {
@@ -85,6 +85,10 @@ public class PrivateRegion extends Region {
         return residentialChunks;
     }
 
+    public Set<ChunkInfo> getResidentialChunksInfo(){
+        return residentialChunks.stream().map(pair -> ChunkInfoManager.getInstance().getOrCreate(pair)).collect(Collectors.toSet());
+    }
+
     public String getName(){
         return name;
     }
@@ -104,6 +108,11 @@ public class PrivateRegion extends Region {
         return world.getChunkAt(mainChunk.getLatter().getFormer(), mainChunk.getLatter().getLatter());
     }
 
+    public @Nullable ChunkInfo getMainChunkInfo(){
+        if(mainChunk == null) return null;
+        return ChunkInfoManager.getInstance().getOrCreate(mainChunk);
+    }
+
     public void setMainChunk(@Nullable Chunk chunk){
         if(chunk == null){
             if(mainChunk != null) residentialChunks.remove(mainChunk);
@@ -113,6 +122,14 @@ public class PrivateRegion extends Region {
         Pair<String, Pair<Integer, Integer>> pair = new Pair<>(chunk.getWorld().getName(), new Pair<>(chunk.getX(), chunk.getZ()));
         residentialChunks.add(pair);
         mainChunk = pair;
+    }
+
+    public @Nullable Location getCoreLocation(){
+        ChunkInfo info = getMainChunkInfo();
+        if(info == null) return null;
+        World world = Bukkit.getWorld(info.getWorld());
+        if(world == null) return null;
+        return new Location(world, info.getCoreX(), info.getCoreY(), info.getCoreZ());
     }
 
     public static PrivateRegion fromName(String name){

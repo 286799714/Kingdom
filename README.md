@@ -23,6 +23,9 @@ The command sender can only claim for his/her own private region, unless he/she 
 **permission**: kingdom.region.private.claim   
 Move the core of Private Region to the position of sender.
 
+4. **/pr recant**    
+**permission**: kingdom.region.private.claim    
+Recant the current chunk for his/her own Private Region   
 </details>
 
 ## Economy   

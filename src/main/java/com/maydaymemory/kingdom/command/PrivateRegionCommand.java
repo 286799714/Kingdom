@@ -116,6 +116,33 @@ public class PrivateRegionCommand extends BaseCommand{
         }
     };
 
+    @CommandHandler(
+            name = "recant",
+            playerOnly = true,
+            permission = "kingdom.region.private.claim",
+            description = "cmd-inf.recant.description"
+    )
+    public SubCommand recant = new SubCommand() {
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            Chunk chunk = player.getLocation().getChunk();
+            ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
+            if(!chunkInfo.isClaimed() || chunkInfo.getPrivateRegionId() == null){
+                sender.sendMessage(processMessage("cmd-inf.recant.not-claimed"));
+                return;
+            }
+            PrivateRegion region = PrivateRegionAPI.getInstance().fromId(chunkInfo.getPrivateRegionId());
+            if(region == null || !region.getOwner().getUniqueId().equals(player.getUniqueId())){
+                sender.sendMessage(processMessage("cmd-inf.recant.not-claimed"));
+                return;
+            }
+            if(PrivateRegionAPI.getInstance().recant(chunk)){
+                sender.sendMessage(processMessage("cmd-inf.recant.success").replaceAll("%region%", region.getName()));
+            }
+        }
+    };
+
     private Stream<PrivateRegion> getStream(Player player){
         boolean flag = player.hasPermission("kingdom.admin");
         return RegionManagerProvider.getInstance().getRegionManager().getRegionMap().values().stream()

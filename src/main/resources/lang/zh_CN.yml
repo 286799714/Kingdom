@@ -51,6 +51,10 @@ cmd-inf:
       name-hover: 字符串
     not-found: §c找不到该名称对应的私人领地
     not-claimed: §c这个区块不是你的私人领地
+  recant:
+    description: 取消声明当前的区域
+    not-claimed: §c这个区块不是你的私人领地
+    success: 已为 %region% 放弃了这个区块。
   eco-create:
     description: 创建一种新货币
     parameter:
@@ -123,8 +127,8 @@ cmd-inf:
       account-hover: |-
         String
         The name of the region.
-    success: "§a§l你的请求已经发送给%player%"
-    success2: "§a§l传送将会在§c%delay%§a§l后开始"
+    success: "你的请求已经发送给§c%player%"
+    success2: "传送将会在§c%delay%§f后开始"
     fail-name: "§c领地不存在!"
     fail-region: "§c你不处于任何领地，无法传送"
     fail-offline: "§c这个领地的主人已经离线"
