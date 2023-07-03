@@ -58,20 +58,38 @@ public class PrivateRegionAPI {
         if(chunkInfo.isClaimed()) return false;
         int limit = config.getInt("private-region.claim.limit", 8);
         if(region.getResidentialChunks().size() >= limit) return false;
-        Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
-        if(type == null || !type.isBlock()) return false;
+        if(!isBorder(region, chunk)) return false;
         PrivateRegionClaimEvent event = new PrivateRegionClaimEvent(region, chunk);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
-        chunkInfo.setResidentChunk(region);
         if(region.getMainChunk() == null){
+            Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
+            if(type == null || !type.isBlock()) return false;
             Block block = chunk.getBlock(7,0,7);
             Block hb = chunk.getWorld().getHighestBlockAt(block.getLocation());
             Block target = chunk.getWorld().getBlockAt(hb.getLocation().add(0, 1 ,0));
             moveCoreBlockTo(region, target);
         }
         else region.addResidentialChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        chunkInfo.setResidentChunk(region);
         return true;
+    }
+
+    /**
+     * Returns true only if the target chunk borders on chunks that have already been claimed by the target Private Region
+     * */
+    public boolean isBorder(PrivateRegion region, Chunk chunk){
+        ChunkInfo[] chunksInfo = new ChunkInfo[4];
+        chunksInfo[0] = ChunkInfoManager.getInstance().getOrCreate(chunk.getWorld().getName(), chunk.getX() + 1, chunk.getZ());
+        chunksInfo[1] = ChunkInfoManager.getInstance().getOrCreate(chunk.getWorld().getName(), chunk.getX(), chunk.getZ() + 1);
+        chunksInfo[2] = ChunkInfoManager.getInstance().getOrCreate(chunk.getWorld().getName(), chunk.getX() - 1, chunk.getZ());
+        chunksInfo[3] = ChunkInfoManager.getInstance().getOrCreate(chunk.getWorld().getName(), chunk.getX(), chunk.getZ() - 1);
+        for(ChunkInfo info : chunksInfo){
+            if(!info.isClaimed()) continue;
+            if(info.getPrivateRegionId() == null) continue;
+            if(region.getId().equals(info.getPrivateRegionId())) return true;
+        }
+        return false;
     }
 
     public boolean recant(Chunk chunk){

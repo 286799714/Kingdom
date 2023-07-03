@@ -11,6 +11,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.JarURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.jar.JarEntry;
 
@@ -36,7 +38,7 @@ public class LanguageUtil {
                         if (input == null) continue;
                         FileConfiguration resourceConfig = new YamlConfiguration();
                         FileConfiguration fileConfig = new YamlConfiguration();
-                        resourceConfig.load(new InputStreamReader(input));
+                        resourceConfig.load(new InputStreamReader(input, StandardCharsets.UTF_8));
                         fileConfig.load(configFile);
                         for(Map.Entry<String, Object> mapEntry : resourceConfig.getValues(true).entrySet()){
                             String path = mapEntry.getKey();

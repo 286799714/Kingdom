@@ -40,6 +40,7 @@ cmd-inf:
       name: region name
       name-hover: String
     not-found: §cNo Private Region found for that name
+    not-border: §cThe chunk where you are does not border designated Private Region
     claimed: "§cThis chunk has been occupied."
     world-unsupported: §cClaims are not allowed in this world.
     amount-limit: "§cThis region's claimed chunks have reached to limit: %limit%"
@@ -51,6 +52,10 @@ cmd-inf:
       name-hover: String
     not-found: §cNo Private Region found for that name
     not-claimed: §cThis chunk is not in your private region.
+  recant:
+    description: Recant the chunk where you are
+    not-claimed: §cThis chunk is not belong to your Private Region
+    success: Recant this chunk for %region%。
   eco-create:
     description: Create a new type of currency.
     parameter:

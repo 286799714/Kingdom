@@ -16,7 +16,7 @@ Create a new Private Region. The name can not be duplicated with others.
 **name** - the name of Private Region.   
 **permission**: kingdom.region.private.claim   
 Claim a chunk for your Private Region. 
-The command sender can only claim for his/her own private region, unless he/she has the "kingdom.admin" permission.
+The command sender can only claim for his/her own private region, unless he/she has the "kingdom.admin" permission.   
 
 3. **/pr movecore {name}**   
 **name** - the name of Private Region.   

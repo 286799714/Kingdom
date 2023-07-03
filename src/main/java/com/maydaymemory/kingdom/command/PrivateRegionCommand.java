@@ -89,6 +89,10 @@ public class PrivateRegionCommand extends BaseCommand{
                     sender.sendMessage(processMessage("cmd-inf.claim.amount-limit").replaceAll("%limit%", String.valueOf(limit)));
                     return;
                 }
+                if(!PrivateRegionAPI.getInstance().isBorder(region, chunk)){
+                    sender.sendMessage(processMessage("cmd-inf.claim.not-border"));
+                    return;
+                }
                 Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
                 if(type == null || !type.isBlock()) {
                     sender.sendMessage(processMessage("cmd-inf.core-type-err"));

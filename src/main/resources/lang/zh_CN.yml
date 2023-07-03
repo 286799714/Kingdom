@@ -40,6 +40,7 @@ cmd-inf:
       name: 领地名称
       name-hover: 字符串
     not-found: §c找不到该名称对应的私人领地
+    not-border: §c你所在的区块和指定的私人领地并不接壤
     claimed: §c这个区块已被占有
     world-unsupported: §c当前世界不允许声明区块。
     amount-limit: "§c领地的声明数量已达到上限：%limit%"
