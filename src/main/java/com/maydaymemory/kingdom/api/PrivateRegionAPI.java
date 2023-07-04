@@ -145,6 +145,8 @@ public class PrivateRegionAPI {
     public boolean invite(PrivateRegion region, OfflinePlayer player){
         if(region.getResident().stream().anyMatch(resident->resident.getUniqueId().equals(player.getUniqueId())))
             return false;
+        if(region.getOwner().getUniqueId().equals(player.getUniqueId()))
+            return false;
         int limit = config.getInt("private-region.resident-limit", 8);
         if(region.getResident().size() >= limit)
             return false;

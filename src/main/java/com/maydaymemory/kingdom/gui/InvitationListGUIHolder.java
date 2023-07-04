@@ -42,7 +42,7 @@ public class InvitationListGUIHolder extends GUIHolder{
         }else {
             int index = (page - 1) * 8 + slot;
             List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
-            GUIAPI.getInstance().openInvitationGUI(player, list.get(index));
+            if(index <= list.size()) GUIAPI.getInstance().openInvitationGUI(player, list.get(index));
         }
     }
 

@@ -238,6 +238,10 @@ public class PrivateRegionCommand extends BaseCommand{
                 sender.sendMessage(processMessage("cmd-inf.invite.resident-already"));
                 return;
             }
+            if(region.getOwner().getUniqueId().equals(invitee.getUniqueId())){
+                sender.sendMessage(processMessage("cmd-inf.invite.resident-already"));
+                return;
+            }
             int limit = config.getInt("private-region.resident-limit", 8);
             if(region.getResident().size() >= limit){
                 sender.sendMessage(processMessage("cmd-inf.invite.resident-limit").replaceAll("%limit%", String.valueOf(limit)));
