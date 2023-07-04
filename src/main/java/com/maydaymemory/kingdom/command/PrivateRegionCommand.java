@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.command;
 
+import com.maydaymemory.kingdom.api.GUIAPI;
 import com.maydaymemory.kingdom.api.PrivateRegionAPI;
 import com.maydaymemory.kingdom.core.command.CommandHandler;
 import com.maydaymemory.kingdom.core.command.ParameterSign;
@@ -207,5 +208,115 @@ public class PrivateRegionCommand extends BaseCommand{
         }
     };
 
+    @CommandHandler(
+            name = "invite",
+            permission = "kingdom.region.private.invite",
+            description = "cmd-inf.invite.description"
+    )
+    public SubCommand invite = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.invite.parameter.invitee",
+                hover = "cmd-inf.invite.parameter.invitee-hover"
+        )
+        OfflinePlayer invitee;
 
+        @ParameterSign(
+                name = "cmd-inf.invite.parameter.region",
+                hover = "cmd-inf.invite.parameter.region-hover"
+        )
+        PrivateRegion region;
+
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            if(!sender.hasPermission("kingdom.admin")){
+                if( !(sender instanceof Player && ((Player) sender).getUniqueId().equals(region.getOwner().getUniqueId())) ) {
+                    sender.sendMessage(processMessage("cmd-inf.invite.not-owner"));
+                    return;
+                }
+            }
+            if(region.getResident().stream().anyMatch(resident->resident.getUniqueId().equals(invitee.getUniqueId()))){
+                sender.sendMessage(processMessage("cmd-inf.invite.resident-already"));
+                return;
+            }
+            int limit = config.getInt("private-region.resident-limit", 8);
+            if(region.getResident().size() >= limit){
+                sender.sendMessage(processMessage("cmd-inf.invite.resident-limit").replaceAll("%limit%", String.valueOf(limit)));
+                return;
+            }
+            if(PrivateRegionAPI.getInstance().invite(region, invitee)){
+                sender.sendMessage(processMessage("cmd-inf.invite.success")
+                        .replaceAll("%region%", region.getName())
+                        .replaceAll("%player%", String.valueOf(invitee.getName()))
+                );
+            }
+        }
+    };
+
+    @CommandHandler(
+            name = "accept",
+            playerOnly = true,
+            permission = "kingdom.region.private.accept",
+            description = "cmd-inf.accept.description"
+    )
+    public SubCommand accept = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.accept.parameter.region",
+                hover = "cmd-inf.accept.parameter.region-hover"
+        )
+        PrivateRegion region;
+
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
+            if(list.isEmpty() || !list.contains(region)){
+                sender.sendMessage(processMessage("cmd-inf.accept.not-invited"));
+                return;
+            }
+            if(PrivateRegionAPI.getInstance().acceptInvitation(region, player)){
+                sender.sendMessage(processMessage("cmd-inf.accept.success").replaceAll("%region%", region.getName()));
+            }
+        }
+    };
+
+    @CommandHandler(
+            name = "reject",
+            playerOnly = true,
+            permission = "kingdom.region.private.reject",
+            description = "cmd-inf.reject.description"
+    )
+    public SubCommand reject = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.reject.parameter.region",
+                hover = "cmd-inf.reject.parameter.region-hover"
+        )
+        PrivateRegion region;
+
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
+            if(list.isEmpty() || !list.contains(region)){
+                sender.sendMessage(processMessage("cmd-inf.reject.not-invited"));
+                return;
+            }
+            if(PrivateRegionAPI.getInstance().rejectInvitation(region, player)){
+                sender.sendMessage(processMessage("cmd-inf.reject.success").replaceAll("%region%", region.getName()));
+            }
+        }
+    };
+
+    @CommandHandler(
+            name = "invitations",
+            playerOnly = true,
+            permission = "kingdom.region.private.invitations",
+            description = "cmd-inf.invitations.description"
+    )
+    public SubCommand invitations = new SubCommand() {
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            GUIAPI.getInstance().openInvitationListGUI(player);
+        }
+    };
 }

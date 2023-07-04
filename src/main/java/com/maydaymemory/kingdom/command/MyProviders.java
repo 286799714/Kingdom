@@ -6,9 +6,12 @@ import com.maydaymemory.kingdom.core.language.LanguageInject;
 import com.maydaymemory.kingdom.model.economy.Account;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class MyProviders {
     @LanguageInject
@@ -21,6 +24,7 @@ public class MyProviders {
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, booleanProvider);
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, intProvider);
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, playerProvider);
+        ParameterManager.registerProvider(Reference.PLUGIN_NAME, offlinePlayerProvider);
         ParameterManager.registerProvider(Reference.PLUGIN_NAME, privateRegionProvider);
 
     }
@@ -166,6 +170,23 @@ public class MyProviders {
         @Override
         public ParameterToken<Player> getToken() {
             return new ParameterToken<Player>() {};
+        }
+    };
+
+    public static final ParameterProvider<OfflinePlayer> offlinePlayerProvider = new ParameterProvider<OfflinePlayer>() {
+        @Override
+        public OfflinePlayer translate(CommandSender sender, String[] args, int index, RootCommand command, SubCommand subCommand, CommandMeta meta) {
+            return Arrays.stream(Bukkit.getOfflinePlayers())
+                    .filter(player -> player.getName() != null && player.getName().equals(args[index]))
+                    .findAny().orElseGet(()->{
+                        sender.sendMessage(lang.getString("cmd.player-not-found", "cmd.player-not-found").replaceAll("%player%", args[index]));
+                        return null;
+                    });
+        }
+
+        @Override
+        public ParameterToken<OfflinePlayer> getToken() {
+            return new ParameterToken<OfflinePlayer>() {};
         }
     };
 

@@ -17,4 +17,7 @@ permissions:
       kingdom.economy.query: true
       kingdom.region.private.create: true
       kingdom.region.private.claim: true
+      kingdom.region.private.invite: true
+      kingdom.region.private.accept: true
+      kingdom.region.private.reject: true
       kingdom.teleport: true

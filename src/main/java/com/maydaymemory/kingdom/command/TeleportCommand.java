@@ -74,7 +74,7 @@ public class TeleportCommand extends BaseCommand{
                 p1.sendMessage(processMessage("teleport.fail"));
                 return;
             }
-            if (TeleportAPI.getInstance().startTeleport(p1, to)) {
+            if (TeleportAPI.getInstance().startTeleportRequest(p1, to)) {
                 if(p.getUniqueId().equals(p1.getUniqueId())) sender.sendMessage(processMessage("cmd-inf.teleport-to.success2").replaceAll("%delay%", String.valueOf((int)(config.getInt("teleport.delay", 100)/2d)/10d)));
                 else sender.sendMessage(processMessage("cmd-inf.teleport-to.success").replaceAll("%player%", p.getName()));
             }

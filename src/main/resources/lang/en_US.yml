@@ -19,6 +19,7 @@ cmd:
   bool-format-wrong: |-
     Wrong input format. A boolean type(true/false) is required. Check:
     %format%'
+  pr-not-found: '§cPrivate Region not found: §f%region%'
 cmd-inf:
   reload:
     description: Reload the plugin
@@ -56,6 +57,31 @@ cmd-inf:
     description: Recant the chunk where you are
     not-claimed: §cThis chunk is not belong to your Private Region
     success: Recant this chunk for %region%。
+  invite:
+    description: Invite player to join your Private Region
+    parameter:
+      invitee: invitee
+      invitee-hover: The name of invitee
+      region: region
+      region-hover: The name of Private Region。
+    not-owner: §cYou are not the owner of this Private Region
+    resident-already: §cThe invitee is already the resident of this Private Region
+    resident-limit: "§cThe amount of this Private Region's residents has reached the limit: %limit%"
+    success: You send an invitation to§c%player%§f to join §c%region%
+  accept:
+    description: Accept Invitation
+    parameter:
+      region: region
+      region-hover: The name of Private Region
+    not-invited: §cYou are not invited by this Private Region
+    success: Now you are the resident of §c%region%
+  reject:
+    description: Reject Invitation
+    parameter:
+      region: region
+      region-hover: The name of Private Region
+    not-invited: §cYou are not invited by this Private Region
+    success: You rejected the invitation from §c%region%
   eco-create:
     description: Create a new type of currency.
     parameter:
@@ -145,9 +171,9 @@ cmd-inf:
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
+  invite-message: You received a invitation from §c%region%§f.
 gui:
   search:
-    material: NETHER_STAR
     name: Searching Private Region...
     text: "§bEnter the name"
     lore:
@@ -156,25 +182,45 @@ gui:
   result:
     title: "§0The Result of search: §b§l%page% §0of §c§l%total_page%"
     button-next:
-      material: NETHER_STAR
       name: "§bThe next page"
       lore:
         - "§bNow you're at %page% of %total_page%"
     button-region:
-      material: GOLD_BLOCK
-      own-material: DIAMOND_BLOCK
       name: "§bClick to teleport to §c%name% §bby §c%owner%"
       lore:
-        - "§b distance:§a§l%distance%§b cost:§a§l%cost%"
+        - "§b distance:§a%distance%§b cost:§a%cost%"
+  invitation:
+    title: Invitation from §c%region%
+    button-accept:
+      name: §a接受邀请
+      lore:
+        - 点击接受邀请
+    button-reject:
+      name: §c拒绝邀请
+      lore:
+        - 点击拒绝邀请
+    button-info:
+      name: 领地信息
+      lore:
+        - '领地名称: §c%region%'
+        - '拥有者: §c%owner%'
+  invitation-list:
+    name: 所有邀请
+    button-next:
+      name: "§b下一页"
+      lore:
+        - "§b现在你在第%page%/%total_page%页"
+    button:
+      name: "来自§c%region%§0的邀请"
 teleport:
   request:
-    - "§a§l %player% §b§lwants to teleport to your §c§l%region%"
-  request-agree: "§a§l-------§b§l[Accept]§a§l-------"
-  request-refuse: "§a§l-------§c§l[Refuse]§a§l-------"
+    - "§c%player%§f wants to teleport to your §c%region%§f, request will be cancelled in %timeout% seconds."
+  request-agree: "§f-------§b[Accept]§f-------"
+  request-refuse: "§f-------§c[Refuse]§f-------"
   request-hover: "§eClick to operate."
-  agree1: "§a§lYou have agreed the request."
-  agree2: "§a§lYour teleport request has been agreed and you'll be teleported."
-  refuse1: "§a§lYou have refused the request."
-  refuse2: "§c§lYour request has been refused!"
-  null: "§c§lYou don't have any request."
-  fail: "§c§lYou don't have enough items to teleport."
+  agree1: "You have agreed the request."
+  agree2: "Your teleport request has been agreed and you'll be teleported."
+  refuse1: "You have refused the request."
+  refuse2: "Your request has been refused!"
+  null: "§cYou don't have any request."
+  fail: "§cYou don't have enough items to teleport."

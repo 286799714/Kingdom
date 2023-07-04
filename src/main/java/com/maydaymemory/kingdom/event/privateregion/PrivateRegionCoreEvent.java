@@ -7,6 +7,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+/**
+ * Do not listen to this event, it is only used as a super class for other events
+ * */
 public abstract class PrivateRegionCoreEvent extends PrivateRegionEvent{
     private final Block core;
 

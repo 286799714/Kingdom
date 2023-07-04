@@ -19,6 +19,7 @@ cmd:
     错误的输入格式。需要一个布尔值(true/false)。检查:
     %format%
   player-not-found: '§c找不到玩家: §f%player%'
+  pr-not-found: '§c找不到私人领地: §f%region%'
 cmd-inf:
   reload:
     description: 重新加载插件
@@ -56,6 +57,31 @@ cmd-inf:
     description: 取消声明当前的区域
     not-claimed: §c这个区块不是你的私人领地
     success: 已为 %region% 放弃了这个区块。
+  invite:
+    description: 邀请玩家加入你的领地
+    parameter:
+      invitee: 受邀人
+      invitee-hover: 填写玩家名称
+      region: 领地名
+      region-hover: 邀请的目标私人领地。
+    not-owner: §c你不是这块私人领地的所有者
+    resident-already: §c受邀人已经是领地的居民了
+    resident-limit: '§c领地居民数量已经达到上限: %limit%'
+    success: 已向§c%player%§f发送添加到领地§c%region%§f的请求
+  accept:
+    description: 接受邀请
+    parameter:
+      region: 领地名称
+      region-hover: 字符串
+    not-invited: §c你没有被这个领地邀请
+    success: 现在你已经是§c%region%的成员了
+  reject:
+    description: 拒绝邀请
+    parameter:
+      region: 领地名称
+      region-hover: 字符串
+    not-invited: §c你没有被这个领地邀请
+    success: 你拒绝了来自§c%region%的邀请
   eco-create:
     description: 创建一种新货币
     parameter:
@@ -124,10 +150,10 @@ cmd-inf:
   teleport-to:
     description: "传送到指定的领地"
     parameter:
-      type: region name
+      type: 领地名
       account-hover: |-
-        String
-        The name of the region.
+        字符串
+        填写领地的名称
     success: "你的请求已经发送给§c%player%"
     success2: "传送将会在§c%delay%§f后开始"
     fail-name: "§c领地不存在!"
@@ -143,9 +169,9 @@ cmd-inf:
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
+  invite-message: 你收到了一个领地§c%region%§f发送的邀请
 gui:
   search:
-    material: NETHER_STAR
     name: "搜索领地..."
     text: "§b输入领地名"
     lore:
@@ -154,24 +180,44 @@ gui:
   result:
     title: "§0搜索结果:第 §b§l%page%§0/§c§l%total_page%§0 页"
     button-next:
-      material: NETHER_STAR
       name: "§b下一页"
       lore:
         - "§b现在你在第%page%/%total_page%页"
     button-region:
-      material: GOLD_BLOCK
-      own-material: DIAMOND_BLOCK
-      name: "§b点击传送到§c§l%owner%§b的领地§c§l%name%"
+      name: "§b点击传送到§c%owner%§b的领地§c%name%"
       lore:
-        - "§b 距离: §a§l%distance% §b花费: §a§l%cost%"
+        - "§b 距离: §a%distance% §b花费: §a%cost%"
+  invitation:
+    title: 来自§c%region%§0的邀请
+    button-accept:
+      name: §a接受邀请
+      lore:
+        - 点击接受邀请
+    button-reject:
+      name: §c拒绝邀请
+      lore:
+        - 点击拒绝邀请
+    button-info:
+      name: 领地信息
+      lore:
+        - '领地名称: §c%region%'
+        - '拥有者: §c%owner%'
+  invitation-list:
+    title: 所有邀请
+    button-next:
+      name: "§b下一页"
+      lore:
+        - "§b现在你在第%page%/%total_page%页"
+    button:
+      name: "来自§c%region%§0的邀请"
 teleport:
   request:
-    - "§a§l%player%§b§l想要传送到你的领地§c§l%region%§f§l"
-  request-agree: "§a§l-------§b§l[同意]§a§l-------"
-  request-refuse: "§a§l-------§c§l[拒绝]§a§l-------"
+    - "§c%player%§f想要传送到你的领地§c%region%§f,请求将在§c%timeout%§f后自动结束"
+  request-agree: "§f-------§b[同意]§f-------"
+  request-refuse: "§f-------§c[拒绝]§f-------"
   request-hover: "§e点击执行操作"
-  agree1: "§a§l你同意了请求"
-  agree2: "§a§l请求被接受，你将会在§c%delay%§a§l后传送到§c%region%"
-  refuse1: "§a§l你拒绝了请求"
-  refuse2: "§c§l你的传送请求被拒绝了"
-  fail: "§c§l你没有足够的物品去传送"
+  agree1: "你同意了请求"
+  agree2: "请求被接受，你将会在§c%delay%§a§l后传送到§c%region%"
+  refuse1: "你拒绝了请求"
+  refuse2: "§c你的传送请求被拒绝了"
+  fail: "§c你没有足够的物品去传送"

@@ -1,10 +1,9 @@
 package com.maydaymemory.kingdom.api;
 
 import com.maydaymemory.kingdom.core.config.ConfigInject;
-import com.maydaymemory.kingdom.event.privateregion.PrivateRegionClaimEvent;
-import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCoreMoveEvent;
-import com.maydaymemory.kingdom.event.privateregion.PrivateRegionCreateEvent;
-import com.maydaymemory.kingdom.event.privateregion.PrivateRegionRecantEvent;
+import com.maydaymemory.kingdom.core.language.LanguageInject;
+import com.maydaymemory.kingdom.core.util.Pair;
+import com.maydaymemory.kingdom.event.privateregion.*;
 import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.*;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
@@ -13,12 +12,15 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.Configuration;
 
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PrivateRegionAPI {
     @ConfigInject
     private static Configuration config;
+    @LanguageInject
+    private static Configuration lang;
+
     private PrivateRegionAPI(){}
 
     private static final class InstanceHolder{
@@ -28,6 +30,8 @@ public class PrivateRegionAPI {
     public static PrivateRegionAPI getInstance(){
         return InstanceHolder.instance;
     }
+
+    private final Set<Pair<String, UUID>> invitations = new TreeSet<>();
 
     /**
      * @param owner the owner of new Private Region
@@ -56,22 +60,22 @@ public class PrivateRegionAPI {
     public boolean claim(PrivateRegion region, Chunk chunk){
         ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(chunk);
         if(chunkInfo.isClaimed()) return false;
-        int limit = config.getInt("private-region.claim.limit", 8);
+        int limit = config.getInt("private-region.claim.limit", 9);
         if(region.getResidentialChunks().size() >= limit) return false;
         if(!isBorder(region, chunk) && region.getResidentialChunks().size() != 0) return false;
         PrivateRegionClaimEvent event = new PrivateRegionClaimEvent(region, chunk);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
+        Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
+        if(type == null || !type.isBlock()) return false;
+        chunkInfo.setResidentChunk(region);
         if(region.getMainChunk() == null){
-            Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
-            if(type == null || !type.isBlock()) return false;
             Block block = chunk.getBlock(7,0,7);
             Block hb = chunk.getWorld().getHighestBlockAt(block.getLocation());
             Block target = chunk.getWorld().getBlockAt(hb.getLocation().add(0, 1 ,0));
             moveCoreBlockTo(region, target);
         }
         else region.addResidentialChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
-        chunkInfo.setResidentChunk(region);
         return true;
     }
 
@@ -113,16 +117,16 @@ public class PrivateRegionAPI {
         return true;
     }
 
-    public void moveCoreBlockTo(PrivateRegion region, Block target){
+    public boolean moveCoreBlockTo(PrivateRegion region, Block target){
         PrivateRegionCoreMoveEvent event = new PrivateRegionCoreMoveEvent(region, target);
         Bukkit.getPluginManager().callEvent(event);
-        if(event.isCancelled()) return;
+        if(event.isCancelled()) return false;
         target = event.getTarget();
         ChunkInfo chunkInfo = ChunkInfoManager.getInstance().getOrCreate(target.getChunk());
-        if(!chunkInfo.isClaimed()) return;
-        if(!region.getId().equals(chunkInfo.getPrivateRegionId())) return;
+        if(!chunkInfo.isClaimed()) return false;
+        if(!region.getId().equals(chunkInfo.getPrivateRegionId())) return false;
         Material type = Material.matchMaterial(config.getString("private-region.claim.core-block", "BEACON"));
-        if(type == null || !type.isBlock()) return;
+        if(type == null || !type.isBlock()) return false;
         Chunk oldChunk = region.getMainChunk();
         if(oldChunk != null) {
             ChunkInfo oldChunkInfo = ChunkInfoManager.getInstance().getOrCreate(oldChunk);
@@ -135,6 +139,58 @@ public class PrivateRegionAPI {
         chunkInfo.setCoreY(target.getY());
         chunkInfo.setCoreZ(target.getZ());
         target.setType(type);
+        return true;
+    }
+
+    public boolean invite(PrivateRegion region, OfflinePlayer player){
+        if(region.getResident().stream().anyMatch(resident->resident.getUniqueId().equals(player.getUniqueId())))
+            return false;
+        int limit = config.getInt("private-region.resident-limit", 8);
+        if(region.getResident().size() >= limit)
+            return false;
+        PrivateRegionInviteEvent event = new PrivateRegionInviteEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        invitations.add(new Pair<>(region.getId(), player.getUniqueId()));
+        if(player.getPlayer() != null) player.getPlayer().sendMessage(lang.getString("region.invite-message","region.invite-message"));
+        return true;
+    }
+
+    public boolean acceptInvitation(PrivateRegion region, OfflinePlayer player){
+        List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
+        if(list.isEmpty() || !list.contains(region))
+            return false;
+        PrivateRegionInviteAcceptEvent event = new PrivateRegionInviteAcceptEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        region.addResident(player);
+        invitations.remove(new Pair<>(region.getId(), player.getUniqueId()));
+        return true;
+    }
+
+    public boolean rejectInvitation(PrivateRegion region, OfflinePlayer player){
+        List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
+        if(list.isEmpty() || !list.contains(region))
+            return false;
+        PrivateRegionInviteRejectEvent event = new PrivateRegionInviteRejectEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        invitations.remove(new Pair<>(region.getId(), player.getUniqueId()));
+        return true;
+    }
+
+    public List<PrivateRegion> getInvitationList(OfflinePlayer player){
+        return invitations.stream()
+                .filter(pair->pair.getLatter().equals(player.getUniqueId()))
+                .map(pair->fromId(pair.getFormer()))
+                .collect(Collectors.toList());
+    }
+
+    public List<OfflinePlayer> getInvitationList(PrivateRegion region){
+        return invitations.stream()
+                .filter(pair->pair.getFormer().equals(region.getId()))
+                .map(pair->Bukkit.getOfflinePlayer(pair.getLatter()))
+                .collect(Collectors.toList());
     }
 
     public PrivateRegion fromName(String name){

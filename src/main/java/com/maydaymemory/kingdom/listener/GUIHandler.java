@@ -31,7 +31,7 @@ public class GUIHandler implements Listener {
         if (!(holder instanceof GUIHolder)) return;
         GUIHolder guiHolder = (GUIHolder) holder;
         event.setCancelled(true);
-        guiHolder.onClick(event.getSlot());
+        if(event.getSlot() >= 0) guiHolder.onClick(event.getSlot());
     }
 
     @EventHandler

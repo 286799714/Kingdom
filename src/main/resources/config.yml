@@ -9,6 +9,9 @@ private-region:
   # One who has "kingdom.admin" permissions will not be limited by this option.
   amount-limit: 1
 
+  # The number limit of residents a Private Region could contain
+  resident-limit: 8
+
   # The names of the world in which the private regions are effective.
   allow-worlds:
     - world
@@ -18,7 +21,7 @@ private-region:
 
   claim:
     # The limit of claiming chunks for Private Region
-    limit: 8
+    limit: 9
     core-block: BEACON
 
   # The default currency used to operate the region.

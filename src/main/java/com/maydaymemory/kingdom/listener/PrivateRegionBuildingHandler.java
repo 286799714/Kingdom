@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.listener;
 
+import com.maydaymemory.kingdom.api.PrivateRegionAPI;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
 import com.maydaymemory.kingdom.core.util.Pair;
@@ -25,16 +26,13 @@ public class PrivateRegionBuildingHandler implements Listener {
 
     private boolean placeOrBreakCheck(Player player, Chunk chunk){
         if(player.hasPermission("kingdom.admin")) return false;
+        if(!config.getStringList("private-region.allow-worlds").contains(chunk.getWorld().getName())) return false;
         PlayerInfo info = PlayerInfoManager.getInstance().getOrCreate(player.getUniqueId());
         Set<PrivateRegion> regions = info.getPrivateRegions();
-        if(!config.getStringList("private-region.allow-worlds").contains(chunk.getWorld().getName())) return false;
-        for(PrivateRegion region : regions){
-            if(region.getResidentialChunks().contains(
-                    new Pair<>(chunk.getWorld().getName(), new Pair<>(chunk.getX(), chunk.getZ())) )
-            )
-                return false;
-        }
-        return true;
+        PrivateRegion region = PrivateRegionAPI.getInstance().fromChunk(player.getLocation().getChunk());
+        if(region == null) return true;
+        if(regions.contains(region)) return false;
+        return !region.containsResident(player);
     }
 
     @EventHandler

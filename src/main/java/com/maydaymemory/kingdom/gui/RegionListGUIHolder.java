@@ -36,7 +36,7 @@ public class RegionListGUIHolder extends GUIHolder {
         this.text = text;
         this.region=region;
         search();
-        next = new ItemStack(Material.matchMaterial(lang.getString("gui.search.material")));
+        next = new ItemStack(Material.NETHER_STAR);
         ItemMeta meta = next.getItemMeta();
         meta.setDisplayName(lang.getString("gui.result.button-next.name")
                 .replaceAll("%page%", String.valueOf(page))
@@ -100,10 +100,8 @@ public class RegionListGUIHolder extends GUIHolder {
     }
 
     public ItemStack createRegionItem(PrivateRegion teleport) {
-        ItemStack regionItem = new ItemStack(Material.matchMaterial(lang.getString(
-                teleport.getOwner().getUniqueId().equals(player.getUniqueId())?
-        "gui.result.button-region.own-material"
-        :"gui.result.button-region.material")));
+        ItemStack regionItem = new ItemStack(
+                teleport.getOwner().getUniqueId().equals(player.getUniqueId()) ? Material.GOLD_BLOCK : Material.DIAMOND_BLOCK);
         ItemMeta meta = regionItem.getItemMeta();
         meta.setDisplayName(lang.getString("gui.result.button-region.name")
                 .replaceAll("%name%", teleport.getName())

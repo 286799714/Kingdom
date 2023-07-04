@@ -59,15 +59,12 @@ public class SearchRegionGUIHolder extends GUIHolder {
 
     {
         if (button == null) {
-            Material material = Material.matchMaterial(lang.getString("gui.search.material",""));
-            if(material != null) {
-                button = new ItemStack(material);
-                ItemMeta meta = button.getItemMeta();
-                if(meta != null) {
-                    meta.setDisplayName("");
-                    meta.setLore(lang.getStringList("gui.search.lore"));
-                    button.setItemMeta(meta);
-                }
+            button = new ItemStack(Material.NETHER_STAR);
+            ItemMeta meta = button.getItemMeta();
+            if(meta != null) {
+                meta.setDisplayName("");
+                meta.setLore(lang.getStringList("gui.search.lore"));
+                button.setItemMeta(meta);
             }
         }
     }

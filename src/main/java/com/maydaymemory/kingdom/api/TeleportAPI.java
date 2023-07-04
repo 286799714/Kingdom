@@ -117,7 +117,7 @@ public class TeleportAPI {
      * @param target destination private region.
      * @return false if the request is not sent.
      * */
-    public boolean startTeleport(Player player, PrivateRegion target){
+    public boolean startTeleportRequest(Player player, PrivateRegion target){
         PrivateRegion start = PrivateRegionAPI.getInstance().fromChunk(player.getLocation().getChunk());
         if(start == null || target == null) return false;
         int cost = calculateCost(start, target);
@@ -137,9 +137,9 @@ public class TeleportAPI {
             owner.sendMessage(lang.getString("teleport.request","teleport.request")
                     .replaceAll("%player%", player.getName()).replaceAll("%region%", target.getName()));
             owner.spigot().sendMessage(new ComponentBuilder(lang.getString("teleport.request-agree", "agree"))
-                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt yes "+player.getName())).getCurrentComponent());
+                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt yes " + player.getName())).getCurrentComponent());
             owner.spigot().sendMessage(new ComponentBuilder(lang.getString("teleport.request-refuse", "refuse"))
-                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt no "+player.getName())).getCurrentComponent());
+                    .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/rt no " + player.getName())).getCurrentComponent());
             new BukkitRunnable(){
                 @Override
                 public void run() {
