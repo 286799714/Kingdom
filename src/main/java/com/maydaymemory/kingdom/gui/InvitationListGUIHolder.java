@@ -70,6 +70,7 @@ public class InvitationListGUIHolder extends GUIHolder{
         List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
         for(int i = 0; i < 8; i++){
             int index = (page - 1) * 8 + i;
+            if(index >= list.size()) break;
             ItemStack buttonItem = new ItemStack(Material.PAPER);
             ItemMeta buttonItemMeta = buttonItem.getItemMeta();
             if(buttonItemMeta != null){
