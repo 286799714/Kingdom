@@ -169,7 +169,7 @@ cmd-inf:
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
-  invite-message: 你收到了一个领地§c%region%§f发送的邀请
+  invite-message: 你收到一个来自领地§c%region%§f的邀请
 gui:
   search:
     name: "搜索领地..."

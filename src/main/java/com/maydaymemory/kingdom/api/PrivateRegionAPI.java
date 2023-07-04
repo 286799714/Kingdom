@@ -154,7 +154,8 @@ public class PrivateRegionAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         invitations.add(new Pair<>(region.getId(), player.getUniqueId()));
-        if(player.getPlayer() != null) player.getPlayer().sendMessage(lang.getString("region.invite-message","region.invite-message"));
+        if(player.getPlayer() != null) player.getPlayer().sendMessage(lang.getString("region.invite-message","region.invite-message")
+                .replaceAll("%region%", region.getName()));
         return true;
     }
 
