@@ -41,8 +41,9 @@ public class InvitationListGUIHolder extends GUIHolder{
             fillItem();
         }else {
             int index = (page - 1) * 8 + slot;
+            player.sendMessage(slot + ";" + index);
             List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
-            if(index <= list.size()) GUIAPI.getInstance().openInvitationGUI(player, list.get(index));
+            if(index < list.size()) GUIAPI.getInstance().openInvitationGUI(player, list.get(index));
         }
     }
 
@@ -78,6 +79,7 @@ public class InvitationListGUIHolder extends GUIHolder{
                         .replaceAll("%region%", list.get(index).getName()));
                 buttonItem.setItemMeta(buttonItemMeta);
             }
+            inventory.setItem(i, buttonItem);
         }
     }
 }

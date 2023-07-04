@@ -62,8 +62,14 @@ public class InvitationGUIHolder extends GUIHolder{
 
     @Override
     public void onClick(int slot) {
-        if(slot == 0) player.performCommand("pr accept " + inviterRegionName);
-        if(slot == 8) player.performCommand("pr reject " + inviterRegionName);
+        if(slot == 0) {
+            player.performCommand("pr accept " + inviterRegionName);
+            player.closeInventory();
+        }
+        if(slot == 8) {
+            player.performCommand("pr reject " + inviterRegionName);
+            player.closeInventory();
+        }
     }
 
     @Nonnull
