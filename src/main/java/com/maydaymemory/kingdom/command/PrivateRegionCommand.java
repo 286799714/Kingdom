@@ -10,6 +10,7 @@ import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.*;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfo;
 import com.maydaymemory.kingdom.model.chunk.ChunkInfoManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PrivateRegionCommand extends BaseCommand{
@@ -113,7 +115,7 @@ public class PrivateRegionCommand extends BaseCommand{
             if(sender instanceof Player) {
                 if (index == 0) {
                     List<String> result = new ArrayList<>();
-                    getStream((Player) sender).forEach(region -> result.add(region.getName()));
+                    getStream(sender).forEach(region -> result.add(region.getName()));
                     return result;
                 }
             }
@@ -148,14 +150,13 @@ public class PrivateRegionCommand extends BaseCommand{
         }
     };
 
-    private Stream<PrivateRegion> getStream(Player player){
-        boolean flag = player.hasPermission("kingdom.admin");
+    private Stream<PrivateRegion> getStream(CommandSender sender){
         return RegionManagerProvider.getInstance().getRegionManager().getRegionMap().values().stream()
                 .filter(region -> region instanceof PrivateRegion)
                 .map(region -> (PrivateRegion) region)
                 .filter(region -> {
-                    if(flag) return true;
-                    else return region.getOwner().getUniqueId().equals(player.getUniqueId());
+                    if(sender.hasPermission("kingdom.admin")) return true;
+                    else return (sender instanceof OfflinePlayer) && region.getOwner().getUniqueId().equals(((OfflinePlayer)sender).getUniqueId());
                 });
     }
 
@@ -200,7 +201,7 @@ public class PrivateRegionCommand extends BaseCommand{
             if(sender instanceof Player) {
                 if (index == 0) {
                     List<String> result = new ArrayList<>();
-                    getStream((Player) sender).forEach(region -> result.add(region.getName()));
+                    getStream(sender).forEach(region -> result.add(region.getName()));
                     return result;
                 }
             }
@@ -253,6 +254,16 @@ public class PrivateRegionCommand extends BaseCommand{
                         .replaceAll("%player%", String.valueOf(invitee.getName()))
                 );
             }
+        }
+        @Override
+        public List<String> tabComplete(CommandSender sender, int index){
+            if(index == 0){
+                return Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
+            }
+            if(index == 1){
+                return getStream(sender).map(PrivateRegion::getName).collect(Collectors.toList());
+            }
+            return new ArrayList<>();
         }
     };
 
