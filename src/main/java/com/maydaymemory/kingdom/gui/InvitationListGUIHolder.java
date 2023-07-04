@@ -37,6 +37,7 @@ public class InvitationListGUIHolder extends GUIHolder{
     @Override
     public void onClick(int slot) {
         if(slot == 8) {
+            if((PrivateRegionAPI.getInstance().getInvitationList(player).size()-1) / 8 + 1 <= page) return;
             page++;
             fillItem();
         }else {

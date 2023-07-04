@@ -182,9 +182,9 @@ gui:
   result:
     title: "§0The Result of search: §b§l%page% §0of §c§l%total_page%"
     button-next:
-      name: "§bThe next page"
+      name: "§bNext page"
       lore:
-        - "§bNow you're at %page% of %total_page%"
+        - "§bNow you're on %page% of %total_page% total"
     button-region:
       name: "§bClick to teleport to §c%name% §bby §c%owner%"
       lore:
@@ -192,26 +192,26 @@ gui:
   invitation:
     title: Invitation from §c%region%
     button-accept:
-      name: §a接受邀请
+      name: §aAccept
       lore:
-        - 点击接受邀请
+        - §0Click to accept invitation
     button-reject:
-      name: §c拒绝邀请
+      name: §cReject
       lore:
-        - 点击拒绝邀请
+        - §0Click to reject invitation
     button-info:
-      name: 领地信息
+      name: §0Region Info
       lore:
-        - '领地名称: §c%region%'
-        - '拥有者: §c%owner%'
+        - '§0Region name: §c%region%'
+        - '§0Owner: §c%owner%'
   invitation-list:
-    name: 所有邀请
+    name: All Invitations
     button-next:
-      name: "§b下一页"
+      name: "§bNext page"
       lore:
-        - "§b现在你在第%page%/%total_page%页"
+        - "§bNow you're on %page% of %total_page% total"
     button:
-      name: "来自§c%region%§0的邀请"
+      name: "§0Invitation from §c%region%"
 teleport:
   request:
     - "§c%player%§f wants to teleport to your §c%region%§f, request will be cancelled in %timeout% seconds."

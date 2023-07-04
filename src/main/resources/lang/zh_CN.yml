@@ -74,7 +74,7 @@ cmd-inf:
       region: 领地名称
       region-hover: 字符串
     not-invited: §c你没有被这个领地邀请
-    success: 现在你已经是§c%region%的成员了
+    success: 现在你已经是§c%region%§f的成员了
   reject:
     description: 拒绝邀请
     parameter:
@@ -192,16 +192,16 @@ gui:
     button-accept:
       name: §a接受邀请
       lore:
-        - 点击接受邀请
+        - §0点击接受邀请
     button-reject:
       name: §c拒绝邀请
       lore:
-        - 点击拒绝邀请
+        - §0点击拒绝邀请
     button-info:
-      name: 领地信息
+      name: §0领地信息
       lore:
-        - '领地名称: §c%region%'
-        - '拥有者: §c%owner%'
+        - '§0领地名称: §c%region%'
+        - '§0拥有者: §c%owner%'
   invitation-list:
     title: 所有邀请
     button-next:
@@ -209,7 +209,7 @@ gui:
       lore:
         - "§b现在你在第%page%/%total_page%页"
     button:
-      name: "来自§c%region%§0的邀请"
+      name: "§0来自§c%region%§0的邀请"
 teleport:
   request:
     - "§c%player%§f想要传送到你的领地§c%region%§f,请求将在§c%timeout%§f后自动结束"
