@@ -3,6 +3,7 @@ package com.maydaymemory.kingdom.core.command;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -64,6 +65,7 @@ public abstract class RootCommand extends Command {
                 return new ArrayList<>();
             }
             if(args.length > 2) {
+                Bukkit.getLogger().info(String.valueOf(args));
                 ParameterTranslator translator = subCommand.getTranslator(getProviderNamespace());
                 CommandMeta meta = new CommandMeta(this.getName(), subCommandName, null, null, parameterMetaMap.get(subCommandName));
                 translator.translate(sender, Arrays.copyOfRange(args, 2, args.length), this, subCommand, meta, args.length - 3);
