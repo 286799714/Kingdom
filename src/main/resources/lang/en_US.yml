@@ -78,6 +78,7 @@ cmd-inf:
       region-hover: The name of Private Region
     not-invited: §cYou are not invited by this Private Region
     success: Now you are the resident of §c%region%
+    message: §c%player%§f accept the invitation to join §c%region%
   reject:
     description: Reject Invitation
     parameter:
@@ -85,6 +86,7 @@ cmd-inf:
       region-hover: The name of Private Region
     not-invited: §cYou are not invited by this Private Region
     success: You rejected the invitation from §c%region%
+    message: §c%player%§f reject the invitation to join §c%region%
   invitations:
     description: View your all invitations
   kick:
@@ -106,6 +108,8 @@ cmd-inf:
       region-hover: The name of Private Region.
     owner-quit: §cYou can't quit because you are the owner of this region
     not-resident: §cYou are not a resident of this Private Region
+    success: You quit §c%region%§f successfully.
+    message: §c%player%§f quit your Private Region §c%region%
   eco-create:
     description: Create a new type of currency.
     parameter:

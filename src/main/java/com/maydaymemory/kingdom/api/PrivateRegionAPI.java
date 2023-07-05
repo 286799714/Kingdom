@@ -168,6 +168,7 @@ public class PrivateRegionAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         region.addResident(player);
+        PlayerInfoManager.getInstance().getOrCreate(player.getUniqueId()).addResidence(region.getId());
         return true;
     }
 
@@ -180,6 +181,7 @@ public class PrivateRegionAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         region.removeResident(player);
+        PlayerInfoManager.getInstance().getOrCreate(player.getUniqueId()).removeResidence(region.getId());
         return true;
     }
 
@@ -228,6 +230,7 @@ public class PrivateRegionAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         region.removeResident(player);
+        PlayerInfoManager.getInstance().getOrCreate(player.getUniqueId()).removeResidence(region.getId());
         return true;
     }
 

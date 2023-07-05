@@ -18,6 +18,8 @@ public class PlayerInfo {
     private UUID uuid;
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private final HashSet<String> privateRegions = new HashSet<>();
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
+    private final HashSet<String> residence = new HashSet<>();
 
     private PlayerInfo(){}
 
@@ -44,6 +46,27 @@ public class PlayerInfo {
     public @Nonnull Set<PrivateRegion> getPrivateRegions(){
         Set<PrivateRegion> regions = new HashSet<>();
         for(String id : privateRegions){
+            Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
+            if(region instanceof PrivateRegion) regions.add((PrivateRegion) region);
+        }
+        return regions;
+    }
+
+    public void addResidence(String id){
+        residence.add(id);
+    }
+
+    public void removeResidence(String id){
+        residence.remove(id);
+    }
+
+    public boolean containsResidence(String id){
+        return residence.contains(id);
+    }
+
+    public @Nonnull Set<PrivateRegion> getResidences(){
+        Set<PrivateRegion> regions = new HashSet<>();
+        for(String id : residence){
             Region region = RegionManagerProvider.getInstance().getRegionManager().getRegionById(id);
             if(region instanceof PrivateRegion) regions.add((PrivateRegion) region);
         }

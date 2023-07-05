@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.gui;
 
+import com.maydaymemory.kingdom.PluginKingdom;
 import com.maydaymemory.kingdom.api.PrivateRegionAPI;
 import com.maydaymemory.kingdom.api.TeleportAPI;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
@@ -88,15 +89,17 @@ public class RegionListGUIHolder extends GUIHolder {
         if (next.equals(inventory.getItem(slot))){
             this.page++;
             createInventory();
-            this.open();
+            Bukkit.getScheduler().runTask(PluginKingdom.getInstance(), this::open);
             return;
         }
         PrivateRegion region=map.get(slot);
         if(region==null){
             return;
         }
-        player.performCommand("rt to "+region.getName());
-        player.closeInventory();
+        Bukkit.getScheduler().runTask(PluginKingdom.getInstance(), ()->{
+            player.performCommand("rt to "+region.getName());
+            player.closeInventory();
+        });
     }
 
     public ItemStack createRegionItem(PrivateRegion teleport) {

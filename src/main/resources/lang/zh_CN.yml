@@ -78,6 +78,7 @@ cmd-inf:
       region-hover: 字符串
     not-invited: §c你没有被这个领地邀请
     success: 现在你已经是§c%region%§f的成员了
+    message: §c%player%§f接受邀请加入了领地§c%region%
   reject:
     description: 拒绝邀请
     parameter:
@@ -85,6 +86,7 @@ cmd-inf:
       region-hover: 字符串
     not-invited: §c你没有被这个领地邀请
     success: 你拒绝了来自§c%region%的邀请
+    message: §c%player%§f拒绝了加入了领地§c%region%§f的邀请
   invitations:
     description: 查看所有邀请
   kick:
@@ -106,6 +108,8 @@ cmd-inf:
       region-hover: 邀请的目标私人领地。
     owner-quit: §c领地的所有者不能退出
     not-resident: §c你不是这个领地的居民
+    success: 你成功退出了§c%region%
+    message: '§c%player%§f退出了你的私人领地: §c%region%'
   eco-create:
     description: 创建一种新货币
     parameter:
@@ -211,7 +215,7 @@ gui:
       lore:
         - "§b 距离: §a%distance% §b花费: §a%cost%"
   invitation:
-    title: 来自§c%region%§0的邀请
+    title: §0来自§c%region%§0的邀请
     button-accept:
       name: §a接受邀请
       lore:

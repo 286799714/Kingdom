@@ -19,6 +19,10 @@ private-region:
   # If true, players will not be able to break or place outside their Private Regions.
   ban-breaking: true
 
+  # If this option is turned on, when the player uses the map,
+  # the private region will be rendered in the form of color blocks
+  render-map: true
+
   claim:
     # The limit of claiming chunks for Private Region
     limit: 9

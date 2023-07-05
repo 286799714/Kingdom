@@ -17,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -292,6 +293,9 @@ public class PrivateRegionCommand extends BaseCommand{
             }
             if(PrivateRegionAPI.getInstance().acceptInvitation(region, player)){
                 sender.sendMessage(processMessage("cmd-inf.accept.success").replaceAll("%region%", region.getName()));
+                if(region.getOwner().getPlayer() != null) region.getOwner().getPlayer().sendMessage(processMessage("cmd-inf.accept.message")
+                        .replaceAll("%player%", player.getName())
+                        .replaceAll("%region%", region.getName()));
             }
         }
     };
@@ -319,6 +323,9 @@ public class PrivateRegionCommand extends BaseCommand{
             }
             if(PrivateRegionAPI.getInstance().rejectInvitation(region, player)){
                 sender.sendMessage(processMessage("cmd-inf.reject.success").replaceAll("%region%", region.getName()));
+                if(region.getOwner().getPlayer() != null) region.getOwner().getPlayer().sendMessage(processMessage("cmd-inf.reject.message")
+                        .replaceAll("%player%", player.getName())
+                        .replaceAll("%region%", region.getName()));
             }
         }
     };
@@ -326,7 +333,7 @@ public class PrivateRegionCommand extends BaseCommand{
     @CommandHandler(
             name = "invitations",
             playerOnly = true,
-            permission = "kingdom.region.private.invitations",
+            permission = "kingdom.region.private.info.invitations",
             description = "cmd-inf.invitations.description"
     )
     public SubCommand invitations = new SubCommand() {
@@ -417,7 +424,44 @@ public class PrivateRegionCommand extends BaseCommand{
                 sender.sendMessage(processMessage("cmd-inf.quit.not-resident"));
                 return;
             }
-            PrivateRegionAPI.getInstance().quit(region, player);
+            if(PrivateRegionAPI.getInstance().quit(region, player)){
+                sender.sendMessage(processMessage("cmd-inf.quit.success")
+                        .replaceAll("%region%", region.getName()));
+                if(region.getOwner().getPlayer() != null) region.getOwner().getPlayer().sendMessage(processMessage("cmd-inf.quit.message")
+                        .replaceAll("%player%", player.getName())
+                        .replaceAll("%region%", region.getName()));
+            }
+        }
+        @Override
+        public List<String> tabComplete(CommandSender sender, int index){
+            if(!(sender instanceof Player)) return new ArrayList<>();
+            Player player = (Player) sender;
+            if(index == 0){
+                return PlayerInfoManager.getInstance().getOrCreate(player.getUniqueId()).getResidences().stream()
+                        .map(PrivateRegion::getName)
+                        .collect(Collectors.toList());
+            }
+            return new ArrayList<>();
+        }
+    };
+
+    @CommandHandler(
+            name = "resident",
+            permission = "kingdom.region.private.info.resident",
+            description = "cmd-inf.resident.description"
+    )
+    public SubCommand resident = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.resident.parameter.region",
+                hover = "cmd-inf.resident.parameter.region-hover"
+        )
+        PrivateRegion region;
+
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            region.getResident().forEach(player -> {
+                sender.sendMessage(String.valueOf(player.getName()));
+            });
         }
     };
 }

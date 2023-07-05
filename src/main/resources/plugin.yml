@@ -20,7 +20,8 @@ permissions:
       kingdom.region.private.invite: true
       kingdom.region.private.accept: true
       kingdom.region.private.reject: true
-      kingdom.region.private.invitations: true
+      kingdom.region.private.info.invitations: true
       kingdom.region.private.kick: true
       kingdom.region.private.quit: true
+      kingdom.region.private.info.resident: true
       kingdom.teleport: true

@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.gui;
 
+import com.maydaymemory.kingdom.PluginKingdom;
 import com.maydaymemory.kingdom.api.GUIAPI;
 import com.maydaymemory.kingdom.api.PrivateRegionAPI;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -43,7 +45,8 @@ public class InvitationListGUIHolder extends GUIHolder{
         }else {
             int index = (page - 1) * 8 + slot;
             List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
-            if(index < list.size()) GUIAPI.getInstance().openInvitationGUI(player, list.get(index));
+            if(index < list.size())
+                Bukkit.getScheduler().runTask(PluginKingdom.getInstance(), ()-> GUIAPI.getInstance().openInvitationGUI(player, list.get(index)));
         }
     }
 

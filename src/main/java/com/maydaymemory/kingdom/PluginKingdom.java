@@ -44,6 +44,7 @@ public class PluginKingdom extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PrivateRegionRedstoneHandler(), this);
         Bukkit.getPluginManager().registerEvents(new EconomyHandler(), this);
         Bukkit.getPluginManager().registerEvents(new GUIHandler(), this);
+        Bukkit.getPluginManager().registerEvents(new MapHandler(), this);
     }
 
     @Override

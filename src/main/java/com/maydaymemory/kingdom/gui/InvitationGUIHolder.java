@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.gui;
 
+import com.maydaymemory.kingdom.PluginKingdom;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
 import org.bukkit.Bukkit;
@@ -21,7 +22,8 @@ public class InvitationGUIHolder extends GUIHolder{
 
     public InvitationGUIHolder(Player player, PrivateRegion inviter) {
         super(player);
-        inventory = Bukkit.createInventory(this, 9, lang.getString("gui.invitation.title","gui.invitation.title"));
+        inventory = Bukkit.createInventory(this, 9, lang.getString("gui.invitation.title","gui.invitation.title")
+                                                                    .replaceAll("%region%", inviter.getName()));
         inviterRegionName = inviter.getName();
 
         ItemStack acceptButton = new ItemStack(Material.NETHER_STAR);
@@ -64,11 +66,11 @@ public class InvitationGUIHolder extends GUIHolder{
     public void onClick(int slot) {
         if(slot == 0) {
             player.performCommand("pr accept " + inviterRegionName);
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(PluginKingdom.getInstance(), ()-> player.closeInventory());
         }
         if(slot == 8) {
             player.performCommand("pr reject " + inviterRegionName);
-            player.closeInventory();
+            Bukkit.getScheduler().runTask(PluginKingdom.getInstance(), ()-> player.closeInventory());
         }
     }
 

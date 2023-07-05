@@ -6,6 +6,7 @@ import com.maydaymemory.kingdom.gui.SearchRegionGUIHolder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -28,7 +29,13 @@ public class GUIHandler implements Listener {
             return;
         }
         InventoryHolder holder = event.getClickedInventory().getHolder();
-        if (!(holder instanceof GUIHolder)) return;
+        if (!(holder instanceof GUIHolder)) {
+            if(event.getInventory().getHolder() instanceof GUIHolder){
+                if(event.getClick().isShiftClick() || event.getClick().equals(ClickType.DOUBLE_CLICK) || event.getClick().equals(ClickType.UNKNOWN))
+                    event.setCancelled(true);
+            }
+            return;
+        }
         GUIHolder guiHolder = (GUIHolder) holder;
         event.setCancelled(true);
         if(event.getSlot() >= 0) guiHolder.onClick(event.getSlot());

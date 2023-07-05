@@ -3,7 +3,6 @@ package com.maydaymemory.kingdom.listener;
 import com.maydaymemory.kingdom.api.PrivateRegionAPI;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
-import com.maydaymemory.kingdom.core.util.Pair;
 import com.maydaymemory.kingdom.model.player.PlayerInfo;
 import com.maydaymemory.kingdom.model.player.PlayerInfoManager;
 import com.maydaymemory.kingdom.model.region.PrivateRegion;
