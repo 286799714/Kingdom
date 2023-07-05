@@ -63,6 +63,12 @@ public abstract class RootCommand extends Command {
             if(subCommand == null){
                 return new ArrayList<>();
             }
+            if(args.length > 2) {
+                ParameterTranslator translator = subCommand.getTranslator(getProviderNamespace());
+                CommandMeta meta = new CommandMeta(this.getName(), subCommandName, null, null, parameterMetaMap.get(subCommandName));
+                translator.translate(sender, Arrays.copyOfRange(args, 2, args.length), this, subCommand, meta, args.length - 3);
+                subCommand.injectParameter(translator);
+            }
             return subCommand.tabComplete(sender, args.length-2).stream()
                     .filter(s -> s.contains(args[args.length-1]))
                     .sorted(new SpellComparator())

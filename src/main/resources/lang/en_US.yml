@@ -63,7 +63,7 @@ cmd-inf:
       invitee: invitee
       invitee-hover: The name of invitee
       region: region
-      region-hover: The name of Private Region。
+      region-hover: The name of Private Region.
     not-owner: §cYou are not the owner of this Private Region
     resident-already: §cThe invitee is already the resident of this Private Region
     resident-limit: "§cThe amount of this Private Region's residents has reached the limit: %limit%"
@@ -82,6 +82,24 @@ cmd-inf:
       region-hover: The name of Private Region
     not-invited: §cYou are not invited by this Private Region
     success: You rejected the invitation from §c%region%
+  invitations:
+    description: View your all invitations
+  kick:
+    description: Kick player from your Private Region
+    parameter:
+      player: player
+      player-hover: The name of player
+      region: region
+      region-hover: The name of Private Region.
+    not-owner: You are not the owner of this Private Region
+    kick-owner: You can't kick the owner of this Private Region
+    not-resident: This player is not a resident of this Private Region
+    success: You've kicked §c%player%§f from §c%region%
+  quit:
+    description: Quit from the Private Region
+    parameter:
+      region: region
+      region-hover: The name of Private Region.
   eco-create:
     description: Create a new type of currency.
     parameter:
@@ -171,7 +189,9 @@ cmd-inf:
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
-  invite-message: You received a invitation from §c%region%§f.
+  invite-message: |-
+    You received a invitation from §c%region%§f.
+    Input /pr invitations to check it.
 gui:
   search:
     name: Searching Private Region...

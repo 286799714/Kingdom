@@ -46,6 +46,7 @@ public abstract class SubCommand {
         int index = 0;
         for(Field field : fields) {
             if (!field.isAnnotationPresent(ParameterSign.class)) continue;
+            if(index >= translator.getArgs().length) return;
             field.setAccessible(true);
             try {
                 field.set(this, translator.getValue(index));

@@ -82,6 +82,24 @@ cmd-inf:
       region-hover: 字符串
     not-invited: §c你没有被这个领地邀请
     success: 你拒绝了来自§c%region%的邀请
+  invitations:
+    description: 查看所有邀请
+  kick:
+    description: 将玩家从你的领地中踢出
+    parameter:
+      player: 玩家名
+      player-hover: 填写玩家名称
+      region: 领地名
+      region-hover: 邀请的目标私人领地。
+    not-owner: 你不是领地的所有者，不能踢出玩家
+    kick-owner: 不能踢领地的所有者
+    not-resident: 该玩家不是这个领地的居民
+    success: 已将玩家§c%player%§f从领地§c%region%§f中踢出
+  quit:
+    description: 从领地中退出
+    parameter:
+      region: 领地名
+      region-hover: 邀请的目标私人领地。
   eco-create:
     description: 创建一种新货币
     parameter:
@@ -169,7 +187,9 @@ cmd-inf:
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
-  invite-message: 你收到一个来自领地§c%region%§f的邀请
+  invite-message: |-
+    你收到一个来自领地§c%region%§f的邀请
+    输入/pr invitations查看
 gui:
   search:
     name: "搜索领地..."

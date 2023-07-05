@@ -18,16 +18,19 @@ public class ParameterTranslator {
 
     /**@return false if arguments length is lower than required, or ParameterProvider provides null*/
     public boolean translate(CommandSender sender, String[] args, RootCommand command, SubCommand subCommand, CommandMeta meta){
-        if(args.length < providers.length) return false;
+        return translate(sender, args, command, subCommand, meta, providers.length - 1);
+    }
+
+    public boolean translate(CommandSender sender, String[] args, RootCommand command, SubCommand subCommand, CommandMeta meta, int range){
+        if(range < 0) return false;
+        if(args.length <= range) return false;
         this.args = args;
-        int index = 0;
         boolean r = true;
         values.clear();
-        for(ParameterProvider<?> provider : providers){
-            Object o = provider.translate(sender, args, index, command, subCommand, meta);
+        for(int index = 0; index <= range && index < providers.length; index++){
+            Object o = providers[index].translate(sender, args, index, command, subCommand, meta);
             if(o == null) r = false;
             values.add(o);
-            index++;
         }
         return r;
     }

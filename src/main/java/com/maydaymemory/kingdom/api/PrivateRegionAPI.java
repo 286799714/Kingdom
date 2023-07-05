@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.api;
 
+import com.maydaymemory.kingdom.Reference;
 import com.maydaymemory.kingdom.core.config.ConfigInject;
 import com.maydaymemory.kingdom.core.language.LanguageInject;
 import com.maydaymemory.kingdom.core.util.Pair;
@@ -159,6 +160,33 @@ public class PrivateRegionAPI {
         return true;
     }
 
+    public boolean join(PrivateRegion region, OfflinePlayer player){
+        if(region.getResident().stream().anyMatch(resident->resident.getUniqueId().equals(player.getUniqueId())))
+            return false;
+        if(region.getOwner().getUniqueId().equals(player.getUniqueId()))
+            return false;
+        int limit = config.getInt("private-region.resident-limit", 8);
+        if(region.getResident().size() >= limit)
+            return false;
+        PrivateRegionJoinEvent event = new PrivateRegionJoinEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        region.addResident(player);
+        return true;
+    }
+
+    public boolean quit(PrivateRegion region, OfflinePlayer player){
+        if(player.getUniqueId().equals(region.getOwner().getUniqueId()))
+            return false;
+        if(!region.containsResident(player))
+            return false;
+        PrivateRegionQuitEvent event = new PrivateRegionQuitEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        region.removeResident(player);
+        return true;
+    }
+
     public boolean acceptInvitation(PrivateRegion region, OfflinePlayer player){
         List<PrivateRegion> list = PrivateRegionAPI.getInstance().getInvitationList(player);
         if(list.isEmpty() || !list.contains(region))
@@ -166,6 +194,9 @@ public class PrivateRegionAPI {
         PrivateRegionInviteAcceptEvent event = new PrivateRegionInviteAcceptEvent(region, player);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
+        PrivateRegionJoinEvent event1 = new PrivateRegionJoinEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event1);
+        if(event1.isCancelled()) return false;
         region.addResident(player);
         invitations.remove(new Pair<>(region.getId(), player.getUniqueId()));
         return true;
@@ -194,6 +225,21 @@ public class PrivateRegionAPI {
                 .filter(pair->pair.getFormer().equals(region.getId()))
                 .map(pair->Bukkit.getOfflinePlayer(pair.getLatter()))
                 .collect(Collectors.toList());
+    }
+
+    public boolean kick(OfflinePlayer player, PrivateRegion region){
+        if(player.getUniqueId().equals(region.getOwner().getUniqueId()))
+            return false;
+        if(!region.containsResident(player))
+            return false;
+        PrivateRegionKickEvent event = new PrivateRegionKickEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event);
+        if(event.isCancelled()) return false;
+        PrivateRegionQuitEvent event1 = new PrivateRegionQuitEvent(region, player);
+        Bukkit.getPluginManager().callEvent(event1);
+        if(event1.isCancelled()) return false;
+        region.removeResident(player);
+        return true;
     }
 
     public PrivateRegion fromName(String name){

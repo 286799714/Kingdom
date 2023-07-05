@@ -334,4 +334,83 @@ public class PrivateRegionCommand extends BaseCommand{
             GUIAPI.getInstance().openInvitationListGUI(player);
         }
     };
+
+    @CommandHandler(
+            name = "kick",
+            permission = "kingdom.region.private.kick",
+            description = "cmd-inf.kick.description"
+    )
+    public SubCommand kick = new SubCommand() {
+
+        @ParameterSign(
+                name = "cmd-inf.kick.parameter.region",
+                hover = "cmd-inf.kick.parameter.region-hover"
+        )
+        PrivateRegion region;
+
+        @ParameterSign(
+                name = "cmd-inf.kick.parameter.player",
+                hover = "cmd-inf.kick.parameter.player-hover"
+        )
+        OfflinePlayer player;
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            if(!sender.hasPermission("kingdom.admin") &&
+                    !(sender instanceof Player && ((Player) sender).getUniqueId().equals(region.getOwner().getUniqueId())))
+            {
+                sender.sendMessage(processMessage("cmd-inf.kick.not-owner"));
+                return;
+            }
+            if(player.getUniqueId().equals(region.getOwner().getUniqueId())){
+                sender.sendMessage(processMessage("cmd-inf.kick.kick-owner"));
+                return;
+            }
+            if(!region.containsResident(player)){
+                sender.sendMessage(processMessage("cmd-inf.kick.not-resident"));
+                return;
+            }
+            if(PrivateRegionAPI.getInstance().kick(player, region)){
+                sender.sendMessage(processMessage("cmd-inf.kick.success")
+                        .replaceAll("%player%", args[0])
+                        .replaceAll("%region%", args[1]));
+            }
+        }
+        @Override
+        public List<String> tabComplete(CommandSender sender, int index){
+            if(index == 0){
+                return getStream(sender).map(PrivateRegion::getName).collect(Collectors.toList());
+            }
+            if(index == 1){
+                return region.getResident().stream().map(OfflinePlayer::getName).collect(Collectors.toList());
+            }
+            return new ArrayList<>();
+        }
+    };
+
+    @CommandHandler(
+            name = "quit",
+            playerOnly = true,
+            permission = "kingdom.region.private.quit",
+            description = "cmd-inf.quit.description"
+    )
+    public SubCommand quit = new SubCommand() {
+        @ParameterSign(
+                name = "cmd-inf.quit.parameter.region",
+                hover = "cmd-inf.quit.parameter.region-hover"
+        )
+        PrivateRegion region;
+        @Override
+        public void execute(CommandSender sender, String label, String[] args) {
+            Player player = (Player) sender;
+            if(player.getUniqueId().equals(region.getOwner().getUniqueId())){
+                //领地的所有者不能退出
+                return;
+            }
+            if(!region.containsResident(player)){
+                //你不是这个领地的居民
+                return;
+            }
+            PrivateRegionAPI.getInstance().quit(region, player);
+        }
+    };
 }
