@@ -253,6 +253,8 @@ public class PrivateRegionCommand extends BaseCommand{
                         .replaceAll("%region%", region.getName())
                         .replaceAll("%player%", String.valueOf(invitee.getName()))
                 );
+                if(invitee.getPlayer() != null) invitee.getPlayer().sendMessage(processMessage("cmd-inf.invite.invite-message")
+                        .replaceAll("%region%", region.getName()));
             }
         }
         @Override
@@ -371,8 +373,12 @@ public class PrivateRegionCommand extends BaseCommand{
             }
             if(PrivateRegionAPI.getInstance().kick(player, region)){
                 sender.sendMessage(processMessage("cmd-inf.kick.success")
-                        .replaceAll("%player%", args[0])
-                        .replaceAll("%region%", args[1]));
+                        .replaceAll("%player%", args[1])
+                        .replaceAll("%region%", args[0]));
+                if(player.getPlayer() != null){
+                    player.getPlayer().sendMessage(processMessage("cmd-inf.kick.kick-message")
+                            .replaceAll("%region%", args[0]));
+                }
             }
         }
         @Override
@@ -399,15 +405,16 @@ public class PrivateRegionCommand extends BaseCommand{
                 hover = "cmd-inf.quit.parameter.region-hover"
         )
         PrivateRegion region;
+
         @Override
         public void execute(CommandSender sender, String label, String[] args) {
             Player player = (Player) sender;
             if(player.getUniqueId().equals(region.getOwner().getUniqueId())){
-                //领地的所有者不能退出
+                sender.sendMessage(processMessage("cmd-inf.quit.owner-quit"));
                 return;
             }
             if(!region.containsResident(player)){
-                //你不是这个领地的居民
+                sender.sendMessage(processMessage("cmd-inf.quit.not-resident"));
                 return;
             }
             PrivateRegionAPI.getInstance().quit(region, player);

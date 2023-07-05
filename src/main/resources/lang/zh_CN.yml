@@ -68,6 +68,9 @@ cmd-inf:
     resident-already: §c受邀人已经是领地的居民了
     resident-limit: '§c领地居民数量已经达到上限: %limit%'
     success: 已向§c%player%§f发送添加到领地§c%region%§f的请求
+    invite-message: |-
+      你收到一个来自领地§c%region%§f的邀请
+      输入/pr invitations查看
   accept:
     description: 接受邀请
     parameter:
@@ -91,15 +94,18 @@ cmd-inf:
       player-hover: 填写玩家名称
       region: 领地名
       region-hover: 邀请的目标私人领地。
-    not-owner: 你不是领地的所有者，不能踢出玩家
-    kick-owner: 不能踢领地的所有者
-    not-resident: 该玩家不是这个领地的居民
+    not-owner: §c你不是领地的所有者，不能踢出玩家
+    kick-owner: §c不能踢领地的所有者
+    not-resident: §c该玩家不是这个领地的居民
     success: 已将玩家§c%player%§f从领地§c%region%§f中踢出
+    kick-message: 你已被踢出领地§c%region%
   quit:
     description: 从领地中退出
     parameter:
       region: 领地名
       region-hover: 邀请的目标私人领地。
+    owner-quit: §c领地的所有者不能退出
+    not-resident: §c你不是这个领地的居民
   eco-create:
     description: 创建一种新货币
     parameter:
@@ -187,9 +193,6 @@ cmd-inf:
 region:
   factory-not-found: 无法找到对应的RegionFactory，可能是还未注册？
   illegal-break: §c你不能在私人领地声明的区块外破坏或放置
-  invite-message: |-
-    你收到一个来自领地§c%region%§f的邀请
-    输入/pr invitations查看
 gui:
   search:
     name: "搜索领地..."
@@ -212,16 +215,16 @@ gui:
     button-accept:
       name: §a接受邀请
       lore:
-        - §0点击接受邀请
+        - §f点击接受邀请
     button-reject:
       name: §c拒绝邀请
       lore:
-        - §0点击拒绝邀请
+        - §f点击拒绝邀请
     button-info:
-      name: §0领地信息
+      name: §f领地信息
       lore:
-        - '§0领地名称: §c%region%'
-        - '§0拥有者: §c%owner%'
+        - '§f领地名称: §c%region%'
+        - '§f拥有者: §c%owner%'
   invitation-list:
     title: 所有邀请
     button-next:
@@ -229,7 +232,7 @@ gui:
       lore:
         - "§b现在你在第%page%/%total_page%页"
     button:
-      name: "§0来自§c%region%§0的邀请"
+      name: "§f来自§c%region%§f的邀请"
 teleport:
   request:
     - "§c%player%§f想要传送到你的领地§c%region%§f,请求将在§c%timeout%§f后自动结束"

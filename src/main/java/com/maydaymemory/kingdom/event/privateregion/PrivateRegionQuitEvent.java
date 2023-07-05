@@ -7,6 +7,9 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
+/**
+ * This event is called only when player quit a Private Region. Will not be called together with PrivateRegionKickEvent
+ * */
 public class PrivateRegionQuitEvent extends PrivateRegionEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 

@@ -7,6 +7,9 @@ import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
+/**
+ * This event is called only when player is kicked from a Private Region. Will not be called together with PrivateRegionQuitEvent
+ * */
 public class PrivateRegionKickEvent extends PrivateRegionEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
 

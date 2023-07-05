@@ -68,6 +68,9 @@ cmd-inf:
     resident-already: §cThe invitee is already the resident of this Private Region
     resident-limit: "§cThe amount of this Private Region's residents has reached the limit: %limit%"
     success: You send an invitation to§c%player%§f to join §c%region%
+    invite-message: |-
+      You received a invitation from §c%region%§f.
+      Input /pr invitations to check it.
   accept:
     description: Accept Invitation
     parameter:
@@ -91,15 +94,18 @@ cmd-inf:
       player-hover: The name of player
       region: region
       region-hover: The name of Private Region.
-    not-owner: You are not the owner of this Private Region
-    kick-owner: You can't kick the owner of this Private Region
-    not-resident: This player is not a resident of this Private Region
+    not-owner: §cYou are not the owner of this Private Region
+    kick-owner: §cYou can't kick the owner of this Private Region
+    not-resident: §cThis player is not a resident of this Private Region
     success: You've kicked §c%player%§f from §c%region%
+    kick-message: You've been kicked from §c%region%
   quit:
     description: Quit from the Private Region
     parameter:
       region: region
       region-hover: The name of Private Region.
+    owner-quit: §cYou can't quit because you are the owner of this region
+    not-resident: §cYou are not a resident of this Private Region
   eco-create:
     description: Create a new type of currency.
     parameter:
@@ -189,9 +195,6 @@ cmd-inf:
 region:
   factory-not-found: The corresponding RegionFactory cannot be found, maybe it has not been registered yet?
   illegal-break: §cYou can't break or place blocks outside the chunks claimed by your private regions.
-  invite-message: |-
-    You received a invitation from §c%region%§f.
-    Input /pr invitations to check it.
 gui:
   search:
     name: Searching Private Region...
@@ -214,16 +217,16 @@ gui:
     button-accept:
       name: §aAccept
       lore:
-        - §0Click to accept invitation
+        - §fClick to accept invitation
     button-reject:
       name: §cReject
       lore:
-        - §0Click to reject invitation
+        - §fClick to reject invitation
     button-info:
-      name: §0Region Info
+      name: §fRegion Info
       lore:
-        - '§0Region name: §c%region%'
-        - '§0Owner: §c%owner%'
+        - '§fRegion name: §c%region%'
+        - '§fOwner: §c%owner%'
   invitation-list:
     name: All Invitations
     button-next:
@@ -231,7 +234,7 @@ gui:
       lore:
         - "§bNow you're on %page% of %total_page% total"
     button:
-      name: "§0Invitation from §c%region%"
+      name: "§fInvitation from §c%region%"
 teleport:
   request:
     - "§c%player%§f wants to teleport to your §c%region%§f, request will be cancelled in %timeout% seconds."

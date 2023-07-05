@@ -1,5 +1,6 @@
 package com.maydaymemory.kingdom.core.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class ParameterTranslator {
     }
 
     public boolean translate(CommandSender sender, String[] args, RootCommand command, SubCommand subCommand, CommandMeta meta, int range){
-        if(range < 0) return false;
+        if(range < 0) return true;
         if(args.length <= range) return false;
         this.args = args;
         boolean r = true;

@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 public class PrivateRegionAPI {
     @ConfigInject
     private static Configuration config;
-    @LanguageInject
-    private static Configuration lang;
 
     private PrivateRegionAPI(){}
 
@@ -155,8 +153,6 @@ public class PrivateRegionAPI {
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
         invitations.add(new Pair<>(region.getId(), player.getUniqueId()));
-        if(player.getPlayer() != null) player.getPlayer().sendMessage(lang.getString("region.invite-message","region.invite-message")
-                .replaceAll("%region%", region.getName()));
         return true;
     }
 
@@ -194,12 +190,8 @@ public class PrivateRegionAPI {
         PrivateRegionInviteAcceptEvent event = new PrivateRegionInviteAcceptEvent(region, player);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
-        PrivateRegionJoinEvent event1 = new PrivateRegionJoinEvent(region, player);
-        Bukkit.getPluginManager().callEvent(event1);
-        if(event1.isCancelled()) return false;
-        region.addResident(player);
         invitations.remove(new Pair<>(region.getId(), player.getUniqueId()));
-        return true;
+        return join(region, player);
     }
 
     public boolean rejectInvitation(PrivateRegion region, OfflinePlayer player){
@@ -235,9 +227,6 @@ public class PrivateRegionAPI {
         PrivateRegionKickEvent event = new PrivateRegionKickEvent(region, player);
         Bukkit.getPluginManager().callEvent(event);
         if(event.isCancelled()) return false;
-        PrivateRegionQuitEvent event1 = new PrivateRegionQuitEvent(region, player);
-        Bukkit.getPluginManager().callEvent(event1);
-        if(event1.isCancelled()) return false;
         region.removeResident(player);
         return true;
     }
